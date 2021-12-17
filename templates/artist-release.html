@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<a href="/">back</a>
+<p>{{ artist }} - {{ title }}</p>
+<ol>
+    {% for track in tracklist %}
+    <li>{{ track.title }} - {{ track.duration }}</li>
+    {% endfor %}
+</ol>
+<img src="{{ image_url }}" alt="">

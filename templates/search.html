@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+<a href="/">back</a>
 <p>{{ search }}</p>
 <ul>
     {% for result in results %}
-    <li>{{ result.title }} - {{ result.type }}</li>
+    <a href="/release/{{ result.id }}">
+        <li>{{ result.title }}</li>
+    </a>
     {% endfor %}
 </ul>
-<p>{{ results }}</p>
-<a href="/">back</a>
