@@ -36,12 +36,10 @@ def music_release(id):
     url = f"{DISCOGS_API}/releases/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response)
-    print(results)
     artist = results.get("artists", [None])[0].get("name")
     title = results.get("title")
     tracklist = results.get("tracklist", [])
     image_url = results.get("images", [None])[0].get("resource_url")
-    print("image_url", image_url)
     return render_template(
         "artist-release.html",
         artist=artist,
