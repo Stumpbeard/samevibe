@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<a href="/release/{{ main_id }}">back</a>
+<p>Vibe: {{ vibe }}</p>
+<ul>
+    {% for connection in connections %}
+    <a href="/release/{{ connection.id }}">
+        <li>{{ connection.artist }} - {{ connection.title }}</li>
+    </a>
+    {% endfor %}
+</ul>

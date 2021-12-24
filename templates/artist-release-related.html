@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<a href="/">back</a>
+<div style="display: flex;">
+    <div>
+        <p>{{ artist }} - {{ title }}</p>
+        <ol>
+            {% for track in tracklist %}
+            <li>{{ track.title }} - {{ track.duration }}</li>
+            {% endfor %}
+        </ol>
+        <img src="{{ image_url }}" alt="">
+    </div>
+    <form action="/release/{{ id }}" method="post">
+        <input name="vibe">
+        <input name="related_id" value="{{ related_id }}" hidden>
+        <button>What's the vibe?</button>
+    </form>
+    <div>
+        <p>{{ artist_2 }} - {{ title_2 }}</p>
+        <ol>
+            {% for track in tracklist_2 %}
+            <li>{{ track.title }} - {{ track.duration }}</li>
+            {% endfor %}
+        </ol>
+        <img src="{{ image_url_2 }}" alt="">
+    </div>
+</div>

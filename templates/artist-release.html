@@ -6,4 +6,27 @@
     <li>{{ track.title }} - {{ track.duration }}</li>
     {% endfor %}
 </ol>
+{% if vibes %}
+<p>Top vibes:</p>
+<ol>
+    {% for vibe in vibes %}
+    <a href="/release/{{ id }}/vibe/{{ vibe[0] }}">
+        <li>{{ vibe[0] }}: {{ vibe[1] }}</li>
+    </a>
+    {% endfor %}
+</ol>
+{% endif %}
+<form action="" method="get">
+    <input name="q">
+    <button>Similar?</button>
+</form>
+{% if results %}
+<ul>
+    {% for result in results %}
+    <a href="/release/{{ id }}/connect/{{ result.id }}">
+        <li>{{ result.title }}</li>
+    </a>
+    {% endfor %}
+</ul>
+{% endif %}
 <img src="{{ image_url }}" alt="">
