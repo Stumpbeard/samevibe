@@ -31,8 +31,8 @@ def find_vibes(id):
     connection = sqlite3.connect("samevibe.db")
     cursor = connection.cursor()
     results = cursor.execute(
-        "SELECT vibe, count(id) FROM relationships WHERE primary_obj = ? GROUP BY vibe ORDER BY count(id) desc",
-        (id,),
+        "SELECT vibe, count(id) FROM relationships WHERE primary_obj = ? or secondary_obj = ? GROUP BY vibe ORDER BY count(id) desc",
+        (id, id),
     ).fetchall()
 
     return results
@@ -42,8 +42,10 @@ def find_connections_by_vibe(id, vibe):
     connection = sqlite3.connect("samevibe.db")
     cursor = connection.cursor()
     results = cursor.execute(
-        "SELECT secondary_obj FROM relationships WHERE primary_obj = ? AND vibe = ?",
-        (id, vibe),
+        "SELECT primary_obj, secondary_obj FROM relationships WHERE primary_obj = ? OR secondary_obj = ? AND vibe = ?",
+        (id, id, vibe),
     ).fetchall()
 
-    return [result[0] for result in results]
+    connections = [result[0] if result[0] != id else result[1] for result in results]
+
+    return connections

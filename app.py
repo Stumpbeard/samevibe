@@ -11,7 +11,9 @@ import db
 USER_AGENT = "SameVibe/0.1 +https://samevi.be"
 MUSIC_KEY = os.environ.get("DISCOGS_CONSUMER_KEY")
 MUSIC_SECRET = os.environ.get("DISCOGS_CONSUMER_SECRET")
+MOVIE_KEY = os.environ.get("OMDB_API_KEY")
 DISCOGS_API = "https://api.discogs.com"
+OMDB_API = "http://www.omdbapi.com"
 HEADERS = {
     "User-Agent": USER_AGENT,
 }
@@ -29,8 +31,12 @@ def hello_world():
 @app.route("/search")
 def search():
     q = request.args.get("q")
-    results = search_music(q)
-    return render_template("search.html", search=q, results=results[:10])
+    type = request.args.get("type")
+    if type == "movie":
+        results = search_movies(q)
+    else:
+        results = search_music(q)
+    return render_template("search.html", search=q, results=results, type=type)
 
 
 @app.route("/release/<id>", methods=["GET", "POST"])
@@ -42,7 +48,7 @@ def music_release(id):
             db.create_vibe_connection(id, related_id, vibe)
         return redirect(f"/release/{id}")
 
-    url = f"{DISCOGS_API}/releases/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
+    url = f"{DISCOGS_API}/masters/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response)
     artist = results.get("artists", [None])[0].get("name")
@@ -69,9 +75,32 @@ def music_release(id):
     )
 
 
+@app.route("/movie/<id>")
+def movie_details(id):
+    url = f"{OMDB_API}/?apikey={MOVIE_KEY}&i={id}"
+    response = requests.get(url, headers=HEADERS).content
+    result = json.loads(response)
+    title = result.get("Title")
+    year = result.get("Year")
+    rating = result.get("Rated")
+    genres = result.get("Genre")
+    runtime = result.get("Runtime")
+    image_url = result.get("Poster")
+
+    return render_template(
+        "movie-details.html",
+        title=title,
+        year=year,
+        rating=rating,
+        genres=genres,
+        runtime=runtime,
+        image_url=image_url,
+    )
+
+
 @app.route("/release/<id>/connect/<related_id>")
 def music_release_related(id, related_id):
-    url = f"{DISCOGS_API}/releases/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
+    url = f"{DISCOGS_API}/masters/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response)
     artist = results.get("artists", [None])[0].get("name")
@@ -79,7 +108,7 @@ def music_release_related(id, related_id):
     tracklist = results.get("tracklist", [])
     image_url = results.get("images", [None])[0].get("resource_url")
 
-    url = f"{DISCOGS_API}/releases/{related_id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
+    url = f"{DISCOGS_API}/masters/{related_id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response)
     artist_2 = results.get("artists", [None])[0].get("name")
@@ -107,7 +136,7 @@ def list_vibe_connections(id, vibe):
     connection_ids = db.find_connections_by_vibe(id, vibe)
     connections = []
     for connection_id in connection_ids:
-        url = f"{DISCOGS_API}/releases/{connection_id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
+        url = f"{DISCOGS_API}/masters/{connection_id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
         response = requests.get(url, headers=HEADERS).content
         results = json.loads(response)
         connection = {
@@ -123,8 +152,16 @@ def list_vibe_connections(id, vibe):
 
 
 def search_music(q):
-    url = f"{DISCOGS_API}/database/search?q={q}&type=release&key={MUSIC_KEY}&secret={MUSIC_SECRET}"
+    url = f"{DISCOGS_API}/database/search?q={q}&type=master&key={MUSIC_KEY}&secret={MUSIC_SECRET}"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response).get("results")
+
+    return results
+
+
+def search_movies(q):
+    url = f"{OMDB_API}/?apikey={MOVIE_KEY}&s={q}&type=movie"
+    response = requests.get(url, headers=HEADERS).content
+    results = json.loads(response).get("Search")
 
     return results

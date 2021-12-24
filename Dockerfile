@@ -1,5 +1,4 @@
-FROM python:3.11.0a3
-
+FROM python:3.9.2
 RUN pip install pipenv
 WORKDIR /app
 

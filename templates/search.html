@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <a href="/">back</a>
 <p>{{ search }}</p>
+{% if type == "movie" %}
+<ul>
+    {% for result in results %}
+    <a href="/movie/{{ result.imdbID }}">
+        <li>{{ result.Title }} ({{ result.Year }})</li>
+    </a>
+    {% endfor %}
+</ul>
+{% else %}
 <ul>
     {% for result in results %}
     <a href="/release/{{ result.id }}">
@@ -8,3 +17,4 @@
     </a>
     {% endfor %}
 </ul>
+{% endif %}
