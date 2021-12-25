@@ -129,7 +129,7 @@ def movie_details(id):
 
 
 @app.route("/<main_type>/<id>/connect/<type>/<related_id>")
-def music_release_related(main_type, id, type, related_id):
+def relate_items(main_type, id, type, related_id):
     if main_type == "movie":
         primary = get_movie(id)
     else:
@@ -141,7 +141,7 @@ def music_release_related(main_type, id, type, related_id):
         related = get_album(related_id)
 
     return render_template(
-        "artist-release-related.html",
+        "relate-items.html",
         main_type=main_type,
         primary=primary.__dict__,
         related=related.__dict__,
