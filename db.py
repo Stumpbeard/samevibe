@@ -11,6 +11,13 @@ def init_db():
 
 def create_vibe_connection(id, id_type, related_id, related_type, vibe):
     connection = sqlite3.connect("samevibe.db")
+    vibe = (
+        vibe.lower()
+        .replace("http", "")
+        .replace(".", "")
+        .replace("/", "")
+        .replace(":", "")
+    )
     cursor = connection.cursor()
     cursor.execute(
         "INSERT INTO relationships (primary_obj, primary_type, secondary_obj, secondary_type, vibe) VALUES (?, ?, ?, ?, ?);",
@@ -37,7 +44,7 @@ def find_vibes(id):
     connection = sqlite3.connect("samevibe.db")
     cursor = connection.cursor()
     results = cursor.execute(
-        "SELECT vibe, count(id) FROM relationships WHERE primary_obj = ? or secondary_obj = ? GROUP BY vibe ORDER BY count(id) desc",
+        "SELECT vibe, count(id) FROM relationships WHERE primary_obj = ? or secondary_obj = ? GROUP BY vibe ORDER BY count(id) desc LIMIT 10",
         (id, id),
     ).fetchall()
 
