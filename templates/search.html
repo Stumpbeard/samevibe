@@ -2,40 +2,17 @@
 
 {% block content %}
 <ul class="search-results">
-    {% if type == "movie" %}
-    {% for result in results %}
-    <a href="/movie/{{ result.imdbID }}">
-        <li>{{ result.Title }} ({{ result.Year }})</li>
-    </a>
-    {% endfor %}
-    {% elif type == "game" %}
-    {% for result in results %}
-    <a href="/game/{{ result.id }}">
-        <li>{{ result.name }} ({{ result.released[:4] if result.released else "?" }})</li>
-    </a>
-    {% endfor %}
-    {% elif type == "book" %}
-    {% for result in results %}
-    <a href="/book/{{ result.id }}">
-        <li>{{ result.volumeInfo.title }} ({% for author in result.volumeInfo.authors %}{{ author }}{{ ", " if not
-            loop.last else "" }}{% endfor %}; {{ result.volumeInfo.publishedDate[:4] if
-            result.volumeInfo.publishedDate else "?" }})</li>
-    </a>
-    {% endfor %}
-    {% else %}
     {% for result in results %}
     <li>
-        <a href="/album/{{ result.id }}" class="search-row">
-            <div class="search-image" style="background-image:  url('{{ result.cover_image }}');"></div>
+        <a href="/{{ type }}/{{ result.id }}" class="search-row">
+            <div class="search-image" style="background-image:  url('{{ result.image_url }}');"></div>
             <div class="search-text">
-                {% set title = result.title.split(" - ") %}
-                <span class="bold">{{ title[0] }}</span>
-                <span>{{ title[1] }} <span class="light">({{ result.year }})</span></span>
-                <span class="subtext">{{ result.style|join(", ") }}</span>
+                <span class="bold">{{ result.creator }}</span>
+                <span>{{ result.title }} <span class="light">({{ result.year }})</span></span>
+                <span class="subtext">{{ result.genre }}</span>
             </div>
         </a>
     </li>
     {% endfor %}
-    {% endif %}
 </ul>
 {% endblock %}

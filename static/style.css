@@ -8,6 +8,7 @@
 html, body {
     min-height: 100vh;
     min-width: 100vw;
+    overflow-x: hidden;
 }
 
 body {
@@ -39,8 +40,8 @@ a {
 }
 
 .search-image {
-    height: 10ch;
-    width: 10ch;
+    min-height: 10ch;
+    min-width: 10ch;
     background-size: cover;
 }
 

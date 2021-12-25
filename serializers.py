@@ -86,3 +86,61 @@ class Book:
             description=data.get("description"),
             image_url=data.get("imageLinks", {}).get("thumbnail"),
         )
+
+
+@dataclass
+class SearchResult:
+    id: str
+    creator: str
+    title: str
+    year: str
+    genre: str
+    image_url: str
+
+    @classmethod
+    def from_discogs(cls, result):
+        split_title = result.get("title", "").split(" - ")
+        return cls(
+            id=result.get("id"),
+            creator=split_title[0],
+            title=split_title[1],
+            year=result.get("year"),
+            genre=", ".join(result.get("style")),
+            image_url=result.get("cover_image"),
+        )
+
+    @classmethod
+    def from_omdb(cls, result):
+        return cls(
+            id=result.get("imdbID"),
+            creator="",
+            title=result.get("Title"),
+            year=result.get("Year"),
+            genre="",
+            image_url=result.get("Poster"),
+        )
+
+    @classmethod
+    def from_googlebooks(cls, result):
+        data = result.get("volumeInfo")
+        return cls(
+            id=result.get("id"),
+            creator=", ".join(data.get("authors", [])),
+            title=data.get("title"),
+            year=data.get("publishedDate"),
+            genre="",
+            image_url=data.get("imageLinks", {}).get("thumbnail"),
+        )
+
+    @classmethod
+    def from_rawg(cls, result):
+        return cls(
+            id=result.get("id"),
+            creator="",
+            title=result.get("name"),
+            year=result.get("released", "")[:4],
+            genre=", ".join(
+                [genre.get("name", "") for genre in result.get("genres", [])]
+            ),
+            image_url=result.get("background_image"),
+        )

@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect
 import requests
 
 import db
-from serializers import Album, Game, Movie, Book
+from serializers import Album, Game, Movie, Book, SearchResult
 
 USER_AGENT = "SameVibe/0.1 +https://samevi.be"
 MUSIC_KEY = os.environ.get("DISCOGS_CONSUMER_KEY")
@@ -149,12 +149,12 @@ def list_vibe_connections(main_type, id, vibe):
     )
 
 
-def search_music(q):
-    url = f"{DISCOGS_API}/database/search?q={q}&type=master&key={MUSIC_KEY}&secret={MUSIC_SECRET}&per_page=10"
+def search_music(q, page=1):
+    url = f"{DISCOGS_API}/database/search?q={q}&type=master&key={MUSIC_KEY}&secret={MUSIC_SECRET}&per_page=10&page={page}"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response).get("results")
 
-    return results
+    return [SearchResult.from_discogs(result) for result in results]
 
 
 def search_movies(q):
@@ -162,7 +162,7 @@ def search_movies(q):
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response).get("Search")
 
-    return results
+    return [SearchResult.from_omdb(result) for result in results]
 
 
 def search_books(q):
@@ -170,7 +170,7 @@ def search_books(q):
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response).get("items")
 
-    return results
+    return [SearchResult.from_googlebooks(result) for result in results]
 
 
 def search_games(q):
@@ -178,7 +178,7 @@ def search_games(q):
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response).get("results")
 
-    return results
+    return [SearchResult.from_rawg(result) for result in results]
 
 
 def get_album(id):

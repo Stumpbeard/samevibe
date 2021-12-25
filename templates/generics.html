@@ -1,10 +1,29 @@
-{% macro search_bar(submit_button="Search", search_value="") %}
+{% macro search_bar(submit_button="Search", search_value="", selected_type="album") %}
 <input name="q" value="{{ search_value }}">
 <select name="type" id="type-selector">
+    {% if selected_type == "album" %}
+    <option value="album" selected>Album</option>
+    {% else %}
     <option value="album">Album</option>
+    {% endif %}
+
+    {% if selected_type == "movie" %}
+    <option value="movie" selected>Movie</option>
+    {% else %}
     <option value="movie">Movie</option>
+    {% endif %}
+
+    {% if selected_type == "game" %}
+    <option value="game" selected>Game</option>
+    {% else %}
     <option value="game">Game</option>
+    {% endif %}
+
+    {% if selected_type == "book" %}
+    <option value="book" selected>Book</option>
+    {% else %}
     <option value="book">Book</option>
+    {% endif %}
 </select>
 <button>{{ submit_button }}</button>
 {% endmacro %}
