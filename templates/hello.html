@@ -1,7 +1,13 @@
 {% import "generics.html" as generics %}
 
-<!DOCTYPE html>
-<p>Same Vibe</p>
-<form action="search" method="get">
-    {{ generics.search_bar() }}
-</form>
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="bigger-text">No accounts. No ads. Just vibes.</h2>
+<p>If you've ever finished up a book, video game, or anything else and wished you could find anything else similar, this
+    is the place for you.</p>
+<p>Just type in the name of a piece of media in the search box above, and get going. When you find what you're looking
+    for, link it to something else by a vibe - it can be anything you want. "Russian Post-Apocalypse", "Rainy Days",
+    "Trashcore", or "Cerebral", if you can think up two pieces of media with that vibe, you can link them together.</p>
+<p>Help build a collection of cool stuff connected by all the kinds of feelings we have when we enjoy art.</p>
+{% endblock %}

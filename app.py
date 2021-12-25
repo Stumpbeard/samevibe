@@ -28,7 +28,7 @@ db.init_db()
 
 @app.route("/")
 def hello_world():
-    return render_template("base.html")
+    return render_template("hello.html")
 
 
 @app.route("/search")
@@ -187,7 +187,6 @@ def get_album(id):
     url = f"{DISCOGS_API}/masters/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response)
-    print(results)
 
     return Album.from_discogs(results)
 

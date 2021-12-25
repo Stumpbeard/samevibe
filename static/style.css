@@ -25,6 +25,10 @@ nav {
     padding: 1ch;
 }
 
+section {
+    padding: 2ch;
+}
+
 ul {
     list-style: none;
     padding: 0;
@@ -37,6 +41,10 @@ ul {
 
 a {
     text-decoration: none;
+}
+
+p {
+    margin-top: 1ch;
 }
 
 .search-image {
@@ -56,6 +64,7 @@ a {
 .search-row {
     display: flex;
     align-items: center;
+    margin-bottom: 1ch;
 }
 
 .search-results > li:nth-child(even) {
@@ -101,6 +110,10 @@ a {
 
 .big-text {
     font-size: 24pt;
+}
+
+.bigger-text {
+    font-size: 36pt;
 }
 
 hr {
