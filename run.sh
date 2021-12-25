@@ -1,3 +1,3 @@
 git pull
-systemd restart samevibe
-systemd restart nginx
+systemctl restart samevibe
+systemctl restart nginx
