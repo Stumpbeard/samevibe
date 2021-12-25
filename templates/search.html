@@ -17,6 +17,16 @@
     </a>
     {% endfor %}
 </ul>
+{% elif type == "book" %}
+<ul>
+    {% for result in results %}
+    <a href="/book/{{ result.id }}">
+        <li>{{ result.volumeInfo.title }} ({% for author in result.volumeInfo.authors %}{{ author }}{{ ", " if not
+            loop.last else "" }}{% endfor %}; {{ result.volumeInfo.publishedDate[:4] if
+            result.volumeInfo.publishedDate else "?" }})</li>
+    </a>
+    {% endfor %}
+</ul>
 {% else %}
 <ul>
     {% for result in results %}

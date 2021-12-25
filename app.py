@@ -5,16 +5,18 @@ from flask import Flask, render_template, request, redirect
 import requests
 
 import db
-from serializers import Album, Game, Movie
+from serializers import Album, Game, Movie, Book
 
 USER_AGENT = "SameVibe/0.1 +https://samevi.be"
 MUSIC_KEY = os.environ.get("DISCOGS_CONSUMER_KEY")
 MUSIC_SECRET = os.environ.get("DISCOGS_CONSUMER_SECRET")
 MOVIE_KEY = os.environ.get("OMDB_API_KEY")
 GAMES_KEY = os.environ.get("RAWG_API_KEY")
+BOOKS_KEY = os.environ.get("GOOGLE_API_KEY")
 DISCOGS_API = "https://api.discogs.com"
 OMDB_API = "http://www.omdbapi.com"
 RAWG_API = "https://api.rawg.io/api"
+GBOOKS_API = "https://www.googleapis.com/books/v1"
 HEADERS = {
     "User-Agent": USER_AGENT,
 }
@@ -37,6 +39,8 @@ def search():
         results = search_movies(q)
     elif type == "game":
         results = search_games(q)
+    elif type == "book":
+        results = search_books(q)
     else:
         results = search_music(q)
     return render_template("search.html", search=q, results=results, type=type)
@@ -56,7 +60,8 @@ def details(main_type, id):
         data = get_movie(id).__dict__
     elif main_type == "game":
         data = get_game(id).__dict__
-        print(data)
+    elif main_type == "book":
+        data = get_book(id).__dict__
     else:
         data = get_album(id).__dict__
 
@@ -68,6 +73,8 @@ def details(main_type, id):
             results = search_movies(q)
         elif type == "game":
             results = search_games(q)
+        elif type == "book":
+            results = search_books(q)
         else:
             results = search_music(q)
 
@@ -90,6 +97,8 @@ def relate_items(main_type, id, type, related_id):
         primary = get_movie(id)
     elif main_type == "game":
         primary = get_game(id)
+    elif main_type == "book":
+        primary = get_book(id)
     else:
         primary = get_album(id)
 
@@ -97,6 +106,8 @@ def relate_items(main_type, id, type, related_id):
         related = get_movie(related_id)
     elif type == "game":
         related = get_game(related_id)
+    elif type == "book":
+        related = get_book(related_id)
     else:
         related = get_album(related_id)
 
@@ -120,6 +131,8 @@ def list_vibe_connections(main_type, id, vibe):
             connection = get_movie(connection_id).__dict__
         elif type == "game":
             connection = get_game(connection_id).__dict__
+        elif type == "book":
+            connection = get_book(connection_id).__dict__
         else:
             connection = get_album(connection_id).__dict__
         connection["id"] = connection_id
@@ -148,6 +161,14 @@ def search_movies(q):
     url = f"{OMDB_API}/?apikey={MOVIE_KEY}&s={q}&type=movie"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response).get("Search")
+
+    return results
+
+
+def search_books(q):
+    url = f"{GBOOKS_API}/volumes?q={q}&key={BOOKS_KEY}"
+    response = requests.get(url, headers=HEADERS).content
+    results = json.loads(response).get("items")
 
     return results
 
@@ -183,3 +204,11 @@ def get_game(id):
     result = json.loads(response)
 
     return Game.from_rawg(result)
+
+
+def get_book(id):
+    url = f"{GBOOKS_API}/volumes/{id}?key={BOOKS_KEY}"
+    response = requests.get(url, headers=HEADERS).content
+    result = json.loads(response)
+
+    return Book.from_google(result)

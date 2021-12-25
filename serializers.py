@@ -60,7 +60,29 @@ class Game:
         return cls(
             id=result.get("id"),
             title=result.get("name"),
-            year=result.get("released", "")[:4],
+            year=result.get("released", "") or ""[:4],
             genres=", ".join([genre["name"] for genre in result.get("genres", [])]),
             image_url=resized_image,
+        )
+
+
+@dataclass
+class Book:
+    id: str
+    title: str
+    author: str
+    year: int
+    description: str
+    image_url: str
+
+    @classmethod
+    def from_google(cls, result):
+        data = result.get("volumeInfo", {})
+        return cls(
+            id=result.get("id"),
+            title=data.get("title"),
+            author=", ".join(data.get("authors", [])),
+            year=data.get("publishedDate", "")[:4],
+            description=data.get("description"),
+            image_url=data.get("imageLinks", {}).get("thumbnail"),
         )

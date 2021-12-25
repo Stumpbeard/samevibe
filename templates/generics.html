@@ -7,7 +7,9 @@
 <input type="radio" name="type" value="movie" id="type-movie">
 <label for="type-movie">movie</label>
 <input type="radio" name="type" value="game" id="type-game">
-<label for="type-movie">game</label>
+<label for="type-game">game</label>
+<input type="radio" name="type" value="book" id="type-book">
+<label for="type-book">book</label>
 {% endmacro %}
 
 {% macro movie(data) %}
@@ -29,4 +31,10 @@
 {% macro game(data) %}
 <p>{{ data.title }} ({{ data.year }})</p>
 <p>Genre: {{ data.genres }}</p>
+{% endmacro %}
+
+{% macro book(data) %}
+<p>{{ data.title }} - {{ data.author }}</p>
+<p>Published: {{ data.year }}</p>
+<p>{{ data.description }}</p>
 {% endmacro %}

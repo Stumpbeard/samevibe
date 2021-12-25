@@ -8,6 +8,8 @@
         {{ generics.movie(primary) }}
         {% elif main_type == "game" %}
         {{ generics.game(primary) }}
+        {% elif main_type == "book" %}
+        {{ generics.book(primary) }}
         {% else %}
         {{ generics.album(primary) }}
         {% endif %}
@@ -24,6 +26,8 @@
         {{ generics.movie(related) }}
         {% elif main_type == "game" %}
         {{ generics.game(related) }}
+        {% elif main_type == "book" %}
+        {{ generics.book(related) }}
         {% else %}
         {{ generics.album(related) }}
         {% endif %}

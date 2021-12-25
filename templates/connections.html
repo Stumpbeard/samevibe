@@ -11,6 +11,10 @@
     <a href="/game/{{ connection.id }}">
         <li>{{ connection.title }} ({{ connection.year }})</li>
     </a>
+    {% elif connection.type == "book" %}
+    <a href="/book/{{ connection.id }}">
+        <li>{{ connection.title }} ({{ connection.author }}; {{ connection.year }})</li>
+    </a>
     {% else %}
     <a href="/album/{{ connection.id }}">
         <li>{{ connection.artist }} - {{ connection.title }}</li>
