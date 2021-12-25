@@ -1,12 +1,13 @@
+from dataclasses import dataclass
 import json
 import os
-import sqlite3
+from typing import List
 
 from flask import Flask, render_template, request, redirect
 import requests
 
 import db
-
+from serializers import Album, Movie
 
 USER_AGENT = "SameVibe/0.1 +https://samevi.be"
 MUSIC_KEY = os.environ.get("DISCOGS_CONSUMER_KEY")
@@ -39,14 +40,15 @@ def search():
     return render_template("search.html", search=q, results=results, type=type)
 
 
-@app.route("/release/<id>", methods=["GET", "POST"])
+@app.route("/album/<id>", methods=["GET", "POST"])
 def music_release(id):
     if request.method == "POST":
         vibe = request.form.get("vibe")
         related_id = request.form.get("related_id")
+        type = request.form.get("type")
         if vibe and related_id:
-            db.create_vibe_connection(id, related_id, vibe)
-        return redirect(f"/release/{id}")
+            db.create_vibe_connection(id, "album", related_id, type, vibe)
+        return redirect(f"/album/{id}")
 
     url = f"{DISCOGS_API}/masters/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
     response = requests.get(url, headers=HEADERS).content
@@ -57,9 +59,13 @@ def music_release(id):
     image_url = results.get("images", [None])[0].get("resource_url")
 
     q = request.args.get("q")
+    type = request.args.get("type")
     results = None
     if q:
-        results = search_music(q)
+        if type == "movie":
+            results = search_movies(q)
+        else:
+            results = search_music(q)
 
     vibes = db.find_vibes(id)
 
@@ -71,12 +77,21 @@ def music_release(id):
         tracklist=tracklist,
         image_url=image_url,
         results=results,
+        type=type,
         vibes=vibes,
     )
 
 
-@app.route("/movie/<id>")
+@app.route("/movie/<id>", methods=["GET", "POST"])
 def movie_details(id):
+    if request.method == "POST":
+        vibe = request.form.get("vibe")
+        related_id = request.form.get("related_id")
+        type = request.form.get("type")
+        if vibe and related_id:
+            db.create_vibe_connection(id, "movie", related_id, type, vibe)
+        return redirect(f"/movie/{id}")
+
     url = f"{OMDB_API}/?apikey={MOVIE_KEY}&i={id}"
     response = requests.get(url, headers=HEADERS).content
     result = json.loads(response)
@@ -87,63 +102,67 @@ def movie_details(id):
     runtime = result.get("Runtime")
     image_url = result.get("Poster")
 
+    q = request.args.get("q")
+    type = request.args.get("type")
+    results = None
+    if q:
+        if type == "movie":
+            results = search_movies(q)
+        else:
+            results = search_music(q)
+
+    vibes = db.find_vibes(id)
+
     return render_template(
         "movie-details.html",
+        id=id,
         title=title,
         year=year,
         rating=rating,
         genres=genres,
         runtime=runtime,
         image_url=image_url,
+        vibes=vibes,
+        results=results,
+        type=type,
     )
 
 
-@app.route("/release/<id>/connect/<related_id>")
-def music_release_related(id, related_id):
-    url = f"{DISCOGS_API}/masters/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
-    response = requests.get(url, headers=HEADERS).content
-    results = json.loads(response)
-    artist = results.get("artists", [None])[0].get("name")
-    title = results.get("title")
-    tracklist = results.get("tracklist", [])
-    image_url = results.get("images", [None])[0].get("resource_url")
+@app.route("/<main_type>/<id>/connect/<type>/<related_id>")
+def music_release_related(main_type, id, type, related_id):
+    if main_type == "movie":
+        primary = get_movie(id)
+    else:
+        primary = get_album(id)
 
-    url = f"{DISCOGS_API}/masters/{related_id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
-    response = requests.get(url, headers=HEADERS).content
-    results = json.loads(response)
-    artist_2 = results.get("artists", [None])[0].get("name")
-    title_2 = results.get("title")
-    tracklist_2 = results.get("tracklist", [])
-    image_url_2 = results.get("images", [None])[0].get("resource_url")
+    if type == "movie":
+        related = get_movie(related_id)
+    else:
+        related = get_album(related_id)
 
     return render_template(
         "artist-release-related.html",
-        id=id,
-        related_id=related_id,
-        artist=artist,
-        title=title,
-        tracklist=tracklist,
-        image_url=image_url,
-        artist_2=artist_2,
-        title_2=title_2,
-        tracklist_2=tracklist_2,
-        image_url_2=image_url_2,
+        main_type=main_type,
+        primary=primary.__dict__,
+        related=related.__dict__,
+        type=type,
     )
 
 
-@app.route("/release/<id>/vibe/<vibe>")
+@app.route("/album/<id>/vibe/<vibe>")
 def list_vibe_connections(id, vibe):
     connection_ids = db.find_connections_by_vibe(id, vibe)
     connections = []
-    for connection_id in connection_ids:
-        url = f"{DISCOGS_API}/masters/{connection_id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
-        response = requests.get(url, headers=HEADERS).content
-        results = json.loads(response)
-        connection = {
-            "id": results.get("id"),
-            "artist": results.get("artists", [None])[0].get("name"),
-            "title": results.get("title"),
-        }
+    for connection in connection_ids:
+        connection_id = connection[0]
+        type = connection[1]
+        if type == "movie":
+            connection = get_movie(connection_id).__dict__
+        else:
+            connection = get_album(connection_id).__dict__
+        connection["id"] = connection_id
+        connection["type"] = type
+
         connections.append(connection)
 
     return render_template(
@@ -165,3 +184,19 @@ def search_movies(q):
     results = json.loads(response).get("Search")
 
     return results
+
+
+def get_album(id):
+    url = f"{DISCOGS_API}/masters/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
+    response = requests.get(url, headers=HEADERS).content
+    results = json.loads(response)
+
+    return Album.from_discogs(results)
+
+
+def get_movie(id):
+    url = f"{OMDB_API}/?apikey={MOVIE_KEY}&i={id}"
+    response = requests.get(url, headers=HEADERS).content
+    result = json.loads(response)
+
+    return Movie.from_omdb(result)

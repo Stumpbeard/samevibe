@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<a href="/release/{{ main_id }}">back</a>
+<a href="/album/{{ main_id }}">back</a>
 <p>Vibe: {{ vibe }}</p>
 <ul>
     {% for connection in connections %}
-    <a href="/release/{{ connection.id }}">
+    {% if connection.type == "movie" %}
+    <a href="/movie/{{ connection.id }}">
+        <li>{{ connection.title }} ({{ connection.year }})</li>
+    </a>
+    {% else %}
+    <a href="/album/{{ connection.id }}">
         <li>{{ connection.artist }} - {{ connection.title }}</li>
     </a>
+    {% endif %}
     {% endfor %}
 </ul>

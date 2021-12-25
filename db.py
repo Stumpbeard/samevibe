@@ -9,12 +9,12 @@ def init_db():
         cursor.executescript(sql)
 
 
-def create_vibe_connection(id, related_id, vibe):
+def create_vibe_connection(id, id_type, related_id, related_type, vibe):
     connection = sqlite3.connect("samevibe.db")
     cursor = connection.cursor()
     cursor.execute(
-        "INSERT INTO relationships (primary_obj, primary_type, secondary_obj, secondary_type, vibe) VALUES (?, 'album', ?, 'album', ?);",
-        (id, related_id, vibe),
+        "INSERT INTO relationships (primary_obj, primary_type, secondary_obj, secondary_type, vibe) VALUES (?, ?, ?, ?, ?);",
+        (id, id_type, related_id, related_type, vibe),
     )
     connection.commit()
 
@@ -42,10 +42,20 @@ def find_connections_by_vibe(id, vibe):
     connection = sqlite3.connect("samevibe.db")
     cursor = connection.cursor()
     results = cursor.execute(
-        "SELECT primary_obj, secondary_obj FROM relationships WHERE primary_obj = ? OR secondary_obj = ? AND vibe = ?",
+        "SELECT primary_obj, primary_type, secondary_obj, secondary_type FROM relationships WHERE (primary_obj = ? OR secondary_obj = ?) AND vibe = ?",
         (id, id, vibe),
     ).fetchall()
 
-    connections = [result[0] if result[0] != id else result[1] for result in results]
+    connections = [
+        (result[0], result[1]) if result[0] != id else (result[2], result[3])
+        for result in results
+    ]
 
     return connections
+
+
+def get_cursor():
+    connection = sqlite3.connect("samevibe.db")
+    cursor = connection.cursor()
+
+    return cursor

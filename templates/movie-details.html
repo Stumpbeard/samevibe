@@ -9,7 +9,7 @@
 <p>Top vibes:</p>
 <ol>
     {% for vibe in vibes %}
-    <a href="/release/{{ id }}/vibe/{{ vibe[0] }}">
+    <a href="/album/{{ id }}/vibe/{{ vibe[0] }}">
         <li>{{ vibe[0] }}: {{ vibe[1] }}</li>
     </a>
     {% endfor %}
@@ -19,14 +19,29 @@
 <form action="" method="get">
     <input name="q">
     <button>Similar?</button>
+    <br>
+    <input type="radio" name="type" value="album" id="type-album" checked>
+    <label for="type-album">album</label>
+    <input type="radio" name="type" value="movie" id="type-movie">
+    <label for="type-movie">movie</label>
 </form>
 {% if results %}
+{% if type == "movie" %}
 <ul>
     {% for result in results %}
-    <a href="/release/{{ id }}/connect/{{ result.id }}">
+    <a href="/movie/{{ id }}/connect/movie/{{ result.imdbID }}">
+        <li>{{ result.Title }} ({{ result.Year }})</li>
+    </a>
+    {% endfor %}
+</ul>
+{% else %}
+<ul>
+    {% for result in results %}
+    <a href="/movie/{{ id }}/connect/album/{{ result.id }}">
         <li>{{ result.title }}</li>
     </a>
     {% endfor %}
 </ul>
+{% endif %}
 {% endif %}
 <img src="{{ image_url }}" alt="">
