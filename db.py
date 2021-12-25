@@ -19,11 +19,17 @@ def create_vibe_connection(id, id_type, related_id, related_type, vibe):
     connection.commit()
 
 
-def drop_tables():
+def recreate_tables():
+
     with open("sql/drop_tables.sql") as f:
-        sql = f.read()
         connection = sqlite3.connect("samevibe.db")
         cursor = connection.cursor()
+        sql = f.read()
+        cursor.executescript(sql)
+    with open("sql/create_tables.sql") as f:
+        connection = sqlite3.connect("samevibe.db")
+        cursor = connection.cursor()
+        sql = f.read()
         cursor.executescript(sql)
 
 

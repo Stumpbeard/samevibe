@@ -1,11 +1,7 @@
+{% import "generics.html" as generics %}
+
 <!DOCTYPE html>
 <p>Same Vibe</p>
 <form action="search" method="get">
-    <input name="q">
-    <button>Search</button>
-    <br>
-    <input type="radio" name="type" value="album" id="type-album" checked>
-    <label for="type-album">album</label>
-    <input type="radio" name="type" value="movie" id="type-movie">
-    <label for="type-movie">movie</label>
+    {{ generics.search() }}
 </form>

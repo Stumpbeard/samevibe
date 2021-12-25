@@ -1,0 +1,45 @@
+{% import "generics.html" as generics %}
+
+<!DOCTYPE html>
+<a href="/">back</a>
+
+{% if main_type == "movie" %}
+{{ generics.movie(data) }}
+{% else %}
+{{ generics.album(data) }}
+{% endif %}
+
+{% if vibes %}
+<p>Top vibes:</p>
+<ol>
+    {% for vibe in vibes %}
+    <a href="/{{ main_type }}/{{ id }}/vibe/{{ vibe[0] }}">
+        <li>{{ vibe[0] }}: {{ vibe[1] }}</li>
+    </a>
+    {% endfor %}
+</ol>
+{% endif %}
+
+<form action="" method="get">
+    {{ generics.search("Similar?") }}
+</form>
+{% if results %}
+{% if type == "movie" %}
+<ul>
+    {% for result in results %}
+    <a href="/{{ main_type }}/{{ id }}/connect/movie/{{ result.imdbID }}">
+        <li>{{ result.Title }} ({{ result.Year }})</li>
+    </a>
+    {% endfor %}
+</ul>
+{% else %}
+<ul>
+    {% for result in results %}
+    <a href="/{{ main_type }}/{{ id }}/connect/album/{{ result.id }}">
+        <li>{{ result.title }}</li>
+    </a>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endif %}
+<img src="{{ data.image_url }}" alt="">

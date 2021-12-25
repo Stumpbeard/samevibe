@@ -1,0 +1,27 @@
+{% macro search(submit_button="Search") %}
+<input name="q">
+<button>{{ submit_button }}</button>
+<br>
+<input type="radio" name="type" value="album" id="type-album" checked>
+<label for="type-album">album</label>
+<input type="radio" name="type" value="movie" id="type-movie">
+<label for="type-movie">movie</label>
+<input type="radio" name="type" value="game" id="type-game">
+<label for="type-movie">game</label>
+{% endmacro %}
+
+{% macro movie(data) %}
+<p>{{ data.title }} ({{ data.year }})</p>
+<p>Rated {{ data.rating }}</p>
+<p>Genre: {{ data.genres }}</p>
+<p>Runtime: {{ data.runtime }}</p>
+{% endmacro %}
+
+{% macro album(data) %}
+<p>{{ data.artist }} - {{ data.title }}</p>
+<ol>
+    {% for track in data.tracklist %}
+    <li>{{ track.title }} - {{ track.duration }}</li>
+    {% endfor %}
+</ol>
+{% endmacro %}
