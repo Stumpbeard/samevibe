@@ -9,6 +9,8 @@ class Album:
     title: str
     tracklist: List[dict]
     image_url: str
+    year: int
+    genre: str
 
     @classmethod
     def from_discogs(cls, results):
@@ -18,6 +20,8 @@ class Album:
             title=results.get("title"),
             tracklist=results.get("tracklist", []),
             image_url=results.get("images", [None])[0].get("resource_url"),
+            year=results.get("year"),
+            genre=", ".join(results.get("styles")),
         )
 
 

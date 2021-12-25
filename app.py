@@ -43,7 +43,9 @@ def search():
         results = search_books(q)
     else:
         results = search_music(q)
-    return render_template("search.html", search_value=q, results=results, type=type)
+    return render_template(
+        "search.html", search_value=q, results=results, search_type=type
+    )
 
 
 @app.route("/<main_type>/<id>", methods=["GET", "POST"])
@@ -185,6 +187,7 @@ def get_album(id):
     url = f"{DISCOGS_API}/masters/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response)
+    print(results)
 
     return Album.from_discogs(results)
 

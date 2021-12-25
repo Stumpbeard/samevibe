@@ -36,12 +36,27 @@
 {% endmacro %}
 
 {% macro album(data) %}
-<p>{{ data.artist }} - {{ data.title }}</p>
-<ol>
-    {% for track in data.tracklist %}
-    <li>{{ track.title }} - {{ track.duration }}</li>
-    {% endfor %}
-</ol>
+<div class="columns">
+    <div>
+        <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
+    </div>
+    <div class="details-text">
+        <h2 class="big-text">{{ data.title }}</h2>
+        <hr>
+        <div class="columns">
+            <div class="rows right-margin row-names">
+                <span>Artist</span>
+                <span>Release</span>
+                <span>Genres</span>
+            </div>
+            <div class="rows row-values">
+                <span>{{ data.artist }}</span>
+                <span>{{ data.year }}</span>
+                <span>{{ data.genre }}</span>
+            </div>
+        </div>
+    </div>
+</div>
 {% endmacro %}
 
 {% macro game(data) %}

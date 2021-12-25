@@ -1,8 +1,8 @@
 {% import "generics.html" as generics %}
 
-<!DOCTYPE html>
-<a href="/">back</a>
+{% extends 'base.html' %}
 
+{% block content %}
 {% if main_type == "movie" %}
 {{ generics.movie(data) }}
 {% elif main_type == "game" %}
@@ -64,4 +64,4 @@
 </ul>
 {% endif %}
 {% endif %}
-<img src="{{ data.image_url }}" alt="">
+{% endblock %}

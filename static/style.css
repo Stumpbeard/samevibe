@@ -45,6 +45,14 @@ a {
     background-size: cover;
 }
 
+.main-image {
+    min-height: 30ch;
+    min-width: 30ch;
+    width: 30ch;
+    height: 30ch;
+    background-size: cover;
+}
+
 .search-row {
     display: flex;
     align-items: center;
@@ -70,5 +78,40 @@ a {
 
 .subtext {
     margin-top: 1ch;
+    font-size: 12pt;
+}
+
+.columns {
+    display: flex;
+}
+
+.rows {
+    display: flex;
+    flex-direction: column;
+}
+
+.details-text {
+    flex: 1 1 auto;
+    margin: 5ch;
+}
+
+.right-margin {
+    margin-right: 2ch;
+}
+
+.big-text {
+    font-size: 24pt;
+}
+
+hr {
+    margin-bottom: 2ch;
+}
+
+.row-names > span {
+    font-size: 12pt;
+    font-weight: lighter;
+}
+
+.row-values > span {
     font-size: 12pt;
 }
