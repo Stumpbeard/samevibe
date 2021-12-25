@@ -25,8 +25,14 @@ nav {
     padding: 1ch;
 }
 
+footer {
+    background: #ccc;
+    padding: 1ch;
+}
+
 section {
     padding: 2ch;
+    flex: 1 1 auto;
 }
 
 ul {
@@ -37,10 +43,12 @@ ul {
 .content {
     width: 90ch;
     background: #ddd;
+    display: flex;
+    flex-direction: column;
 }
 
 a {
-    text-decoration: none;
+    text-decoration-line: none;
 }
 
 p {
@@ -127,4 +135,17 @@ hr {
 
 .row-values > span {
     font-size: 12pt;
+}
+
+.footer-text {
+    font-size: 10pt;
+}
+
+.footer-text > a {
+    font-size: 10pt;
+}
+
+footer {
+    display: flex;
+    flex-direction: row-reverse;
 }
