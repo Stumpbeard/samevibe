@@ -42,3 +42,25 @@ class Movie:
             runtime=result.get("Runtime"),
             image_url=result.get("Poster"),
         )
+
+
+@dataclass
+class Game:
+    id: str
+    title: str
+    year: int
+    genres: str
+    image_url: str
+
+    @classmethod
+    def from_rawg(cls, result):
+        resized_image = result.get("background_image", "").replace(
+            "io/media/", "io/media/resize/420/-/"
+        )
+        return cls(
+            id=result.get("id"),
+            title=result.get("name"),
+            year=result.get("released", "")[:4],
+            genres=", ".join([genre["name"] for genre in result.get("genres", [])]),
+            image_url=resized_image,
+        )

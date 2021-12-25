@@ -1,13 +1,11 @@
-from dataclasses import dataclass
 import json
 import os
-from typing import List
 
 from flask import Flask, render_template, request, redirect
 import requests
 
 import db
-from serializers import Album, Movie
+from serializers import Album, Game, Movie
 
 USER_AGENT = "SameVibe/0.1 +https://samevi.be"
 MUSIC_KEY = os.environ.get("DISCOGS_CONSUMER_KEY")
@@ -37,6 +35,8 @@ def search():
     type = request.args.get("type")
     if type == "movie":
         results = search_movies(q)
+    elif type == "game":
+        results = search_games(q)
     else:
         results = search_music(q)
     return render_template("search.html", search=q, results=results, type=type)
@@ -54,6 +54,9 @@ def details(main_type, id):
 
     if main_type == "movie":
         data = get_movie(id).__dict__
+    elif main_type == "game":
+        data = get_game(id).__dict__
+        print(data)
     else:
         data = get_album(id).__dict__
 
@@ -63,6 +66,8 @@ def details(main_type, id):
     if q:
         if type == "movie":
             results = search_movies(q)
+        elif type == "game":
+            results = search_games(q)
         else:
             results = search_music(q)
 
@@ -83,11 +88,15 @@ def details(main_type, id):
 def relate_items(main_type, id, type, related_id):
     if main_type == "movie":
         primary = get_movie(id)
+    elif main_type == "game":
+        primary = get_game(id)
     else:
         primary = get_album(id)
 
     if type == "movie":
         related = get_movie(related_id)
+    elif type == "game":
+        related = get_game(related_id)
     else:
         related = get_album(related_id)
 
@@ -109,6 +118,8 @@ def list_vibe_connections(main_type, id, vibe):
         type = connection[1]
         if type == "movie":
             connection = get_movie(connection_id).__dict__
+        elif type == "game":
+            connection = get_game(connection_id).__dict__
         else:
             connection = get_album(connection_id).__dict__
         connection["id"] = connection_id
@@ -143,8 +154,9 @@ def search_movies(q):
 
 def search_games(q):
     url = f"{RAWG_API}/games?key={GAMES_KEY}&search={q}"
+    print(url)
     response = requests.get(url, headers=HEADERS).content
-    results = json.loads(response)
+    results = json.loads(response).get("results")
 
     return results
 
@@ -163,3 +175,11 @@ def get_movie(id):
     result = json.loads(response)
 
     return Movie.from_omdb(result)
+
+
+def get_game(id):
+    url = f"{RAWG_API}/games/{id}?key={GAMES_KEY}"
+    response = requests.get(url, headers=HEADERS).content
+    result = json.loads(response)
+
+    return Game.from_rawg(result)

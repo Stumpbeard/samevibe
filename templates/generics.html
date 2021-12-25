@@ -25,3 +25,8 @@
     {% endfor %}
 </ol>
 {% endmacro %}
+
+{% macro game(data) %}
+<p>{{ data.title }} ({{ data.year }})</p>
+<p>Genre: {{ data.genres }}</p>
+{% endmacro %}

@@ -1,19 +1,15 @@
+{% import "generics.html" as generics %}
+
 <!DOCTYPE html>
 <a href="/">back</a>
 <div style="display: flex;">
     <div>
         {% if main_type == "movie" %}
-        <p>{{ primary.title }} ({{ primary.year }})</p>
-        <p>Rated {{ primary.rating }}</p>
-        <p>Genre: {{ primary.genres }}</p>
-        <p>Runtime: {{ primary.runtime }}</p>
+        {{ generics.movie(primary) }}
+        {% elif main_type == "game" %}
+        {{ generics.game(primary) }}
         {% else %}
-        <p>{{ primary.artist }} - {{ primary.title }}</p>
-        <ol>
-            {% for track in primary.tracklist %}
-            <li>{{ track.title }} - {{ track.duration }}</li>
-            {% endfor %}
-        </ol>
+        {{ generics.album(primary) }}
         {% endif %}
         <img src="{{ primary.image_url }}" alt="">
     </div>
@@ -24,18 +20,12 @@
         <button>What's the vibe?</button>
     </form>
     <div>
-        {% if type == "movie" %}
-        <p>{{ related.title }} ({{ related.year }})</p>
-        <p>Rated {{ related.rating }}</p>
-        <p>Genre: {{ related.genres }}</p>
-        <p>Runtime: {{ related.runtime }}</p>
+        {% if main_type == "movie" %}
+        {{ generics.movie(related) }}
+        {% elif main_type == "game" %}
+        {{ generics.game(related) }}
         {% else %}
-        <p>{{ related.artist }} - {{ related.title }}</p>
-        <ol>
-            {% for track in related.tracklist %}
-            <li>{{ track.title }} - {{ track.duration }}</li>
-            {% endfor %}
-        </ol>
+        {{ generics.album(related) }}
         {% endif %}
         <img src="{{ related.image_url }}" alt="">
     </div>

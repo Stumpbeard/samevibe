@@ -5,6 +5,8 @@
 
 {% if main_type == "movie" %}
 {{ generics.movie(data) }}
+{% elif main_type == "game" %}
+{{ generics.game(data) }}
 {% else %}
 {{ generics.album(data) }}
 {% endif %}
@@ -29,6 +31,14 @@
     {% for result in results %}
     <a href="/{{ main_type }}/{{ id }}/connect/movie/{{ result.imdbID }}">
         <li>{{ result.Title }} ({{ result.Year }})</li>
+    </a>
+    {% endfor %}
+</ul>
+{% elif type == "game" %}
+<ul>
+    {% for result in results %}
+    <a href="/{{ main_type }}/{{ id }}/connect/game/{{ result.id }}">
+        <li>{{ result.name }} ({{ result.released[:4] if result.released else "?" }})</li>
     </a>
     {% endfor %}
 </ul>

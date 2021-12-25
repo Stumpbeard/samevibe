@@ -9,6 +9,14 @@
     </a>
     {% endfor %}
 </ul>
+{% elif type == "game" %}
+<ul>
+    {% for result in results %}
+    <a href="/game/{{ result.id }}">
+        <li>{{ result.name }} ({{ result.released[:4] if result.released else "?" }})</li>
+    </a>
+    {% endfor %}
+</ul>
 {% else %}
 <ul>
     {% for result in results %}
