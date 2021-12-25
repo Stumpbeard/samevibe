@@ -175,7 +175,6 @@ def search_books(q):
 
 def search_games(q):
     url = f"{RAWG_API}/games?key={GAMES_KEY}&search={q}"
-    print(url)
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response).get("results")
 
