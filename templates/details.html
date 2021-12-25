@@ -17,7 +17,7 @@
 <p>Top vibes:</p>
 <ol>
     {% for vibe in vibes %}
-    <a href="/{{ main_type }}/{{ id }}/vibe/{{ vibe[0] }}">
+    <a class="show-link-line" href="/{{ main_type }}/{{ id }}/vibe/{{ vibe[0] }}">
         <li>{{ vibe[0] }}: {{ vibe[1] }}</li>
     </a>
     {% endfor %}

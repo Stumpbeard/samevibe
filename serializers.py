@@ -142,7 +142,7 @@ class SearchResult:
             id=result.get("id"),
             creator="",
             title=result.get("name"),
-            year=result.get("released", "")[:4],
+            year=(result.get("released", "") or "?")[:4],
             genre=", ".join(
                 [genre.get("name", "") for genre in result.get("genres", [])]
             ),

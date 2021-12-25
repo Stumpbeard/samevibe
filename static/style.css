@@ -149,3 +149,7 @@ footer {
     display: flex;
     flex-direction: row-reverse;
 }
+
+.show-link-line {
+    text-decoration-line: underline;
+}
