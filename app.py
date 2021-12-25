@@ -28,7 +28,7 @@ db.init_db()
 
 @app.route("/")
 def hello_world():
-    return render_template("hello.html")
+    return render_template("base.html")
 
 
 @app.route("/search")
@@ -43,7 +43,7 @@ def search():
         results = search_books(q)
     else:
         results = search_music(q)
-    return render_template("search.html", search=q, results=results, type=type)
+    return render_template("search.html", search_value=q, results=results, type=type)
 
 
 @app.route("/<main_type>/<id>", methods=["GET", "POST"])
@@ -150,7 +150,7 @@ def list_vibe_connections(main_type, id, vibe):
 
 
 def search_music(q):
-    url = f"{DISCOGS_API}/database/search?q={q}&type=master&key={MUSIC_KEY}&secret={MUSIC_SECRET}"
+    url = f"{DISCOGS_API}/database/search?q={q}&type=master&key={MUSIC_KEY}&secret={MUSIC_SECRET}&per_page=10"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response).get("results")
 

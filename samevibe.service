@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve samevibe
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/root/samevibe
+Environment="PATH=/root/samevibe/venv/bin"
+ExecStart=/root/samevibe/venv/bin/gunicorn --workers 3 --bind unix:samevibe.sock -m 007 app:app
+
+[Install]
+WantedBy=multi-user.target

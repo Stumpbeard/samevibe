@@ -1,0 +1,18 @@
+{% import "generics.html" as generics %}
+
+<!DOCTYPE html>
+<title>Same Vibe</title>
+<link rel="stylesheet" href="/static/style.css">
+<div class="content">
+    <nav>
+        <a href="/" class="title-link">
+            <h1>Same Vibe</h1>
+        </a>
+        <form action="search" method="get">
+            {{ generics.search_bar("Search", search_value) }}
+        </form>
+    </nav>
+    <section>
+        {% block content %}{% endblock %}
+    </section>
+</div>

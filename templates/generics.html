@@ -1,15 +1,12 @@
-{% macro search(submit_button="Search") %}
-<input name="q">
+{% macro search_bar(submit_button="Search", search_value="") %}
+<input name="q" value="{{ search_value }}">
+<select name="type" id="type-selector">
+    <option value="album">Album</option>
+    <option value="movie">Movie</option>
+    <option value="game">Game</option>
+    <option value="book">Book</option>
+</select>
 <button>{{ submit_button }}</button>
-<br>
-<input type="radio" name="type" value="album" id="type-album" checked>
-<label for="type-album">album</label>
-<input type="radio" name="type" value="movie" id="type-movie">
-<label for="type-movie">movie</label>
-<input type="radio" name="type" value="game" id="type-game">
-<label for="type-game">game</label>
-<input type="radio" name="type" value="book" id="type-book">
-<label for="type-book">book</label>
 {% endmacro %}
 
 {% macro movie(data) %}
