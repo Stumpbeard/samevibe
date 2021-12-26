@@ -1,7 +1,14 @@
+:root {
+    --color-0: #eee;
+    --color-1: #ddd;
+    --color-2: #ccc;
+    --color-3: #111;
+}
+
 * {
     margin: 0;
     box-sizing: border-box;
-    color: #111;
+    color: var(--color-3);
     font: 16pt sans-serif;
 }
 
@@ -14,19 +21,19 @@ html, body {
 body {
     display: flex;
     justify-content: center;
-    background: #eee;
+    background: var(--color-0);
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #ccc;
+    background: var(--color-2);
     padding: 1ch;
 }
 
 footer {
-    background: #ccc;
+    background: var(--color-2);
     padding: 1ch;
 }
 
@@ -42,7 +49,7 @@ ul {
 
 .content {
     width: 90ch;
-    background: #ddd;
+    background: var(--color-1);
     display: flex;
     flex-direction: column;
 }
@@ -80,7 +87,7 @@ h3 {
 }
 
 .search-results > li:nth-child(even) {
-    background: #eee;
+    background: var(--color-0);
 }
 
 .search-text {
@@ -187,7 +194,7 @@ footer {
 .tracklist {
     height: 6ch;
     overflow-y: auto;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-2);
     padding-left: 0;
 }
 
