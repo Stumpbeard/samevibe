@@ -28,7 +28,7 @@
 <button>{{ submit_button }}</button>
 {% endmacro %}
 
-{% macro movie(data) %}
+{% macro movie(data, vibes) %}
 <div class="details-content columns">
     <div>
         <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
@@ -38,12 +38,16 @@
         <hr>
         <div class="columns">
             <div class="rows right-margin row-names">
+                <span>Director</span>
+                <span>Writer</span>
                 <span>Release</span>
                 <span>Rating</span>
                 <span>Runtime</span>
                 <span>Genres</span>
             </div>
             <div class="rows row-values">
+                <span>{{ data.director }}</span>
+                <span>{{ data.writer }}</span>
                 <span>{{ data.year }}</span>
                 <span>{{ data.rating }}</span>
                 <span>{{ data.runtime }}</span>
@@ -112,13 +116,78 @@
 </div>
 {% endmacro %}
 
-{% macro game(data) %}
-<p>{{ data.title }} ({{ data.year }})</p>
-<p>Genre: {{ data.genres }}</p>
+{% macro game(data, vibes) %}
+<div class="details-content columns">
+    <div>
+        <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
+    </div>
+    <div class="details-text">
+        <h2 class="big-text">{{ data.title }}</h2>
+        <hr>
+        <div class="columns">
+            <div class="rows right-margin row-names">
+                <span>Developer</span>
+                <span>Release</span>
+                <span>Rating</span>
+                <span>Genres</span>
+            </div>
+            <div class="rows row-values">
+                <span>{{ data.developers }}</span>
+                <span>{{ data.year }}</span>
+                <span>{{ data.rating }}</span>
+                <span>{{ data.genres }}</span>
+            </div>
+        </div>
+        <div class="rows">
+            <h3>Top Vibes</h3>
+            {% if vibes|length == 0 %}
+            <span>No vibes yet... add some!</span>
+            {% endif %}
+            <ol class="vibe-list">
+                {% for vibe in vibes %}
+                <li>{{ vibe.name }} ({{ vibe.count }})</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
 {% endmacro %}
 
-{% macro book(data) %}
-<p>{{ data.title }} - {{ data.author }}</p>
-<p>Published: {{ data.year }}</p>
-<p>{{ data.description }}</p>
+{% macro book(data, vibes) %}
+<div class="details-content columns">
+    <div>
+        <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
+    </div>
+    <div class="details-text">
+        <h2 class="big-text">{{ data.title }}</h2>
+        <hr>
+        <div class="columns">
+            <div class="rows right-margin row-names">
+                <span>Author</span>
+                <span>Publisher</span>
+                <span>Release</span>
+                <span>Pages</span>
+                <span>Genres</span>
+            </div>
+            <div class="rows row-values">
+                <span>{{ data.author }}</span>
+                <span>{{ data.publisher }}</span>
+                <span>{{ data.year }}</span>
+                <span>{{ data.pages }}</span>
+                <span>{{ data.genre }}</span>
+            </div>
+        </div>
+        <div class="rows">
+            <h3>Top Vibes</h3>
+            {% if vibes|length == 0 %}
+            <span>No vibes yet... add some!</span>
+            {% endif %}
+            <ol class="vibe-list">
+                {% for vibe in vibes %}
+                <li>{{ vibe.name }} ({{ vibe.count }})</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
 {% endmacro %}

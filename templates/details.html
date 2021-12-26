@@ -4,11 +4,11 @@
 
 {% block content %}
 {% if main_type == "movie" %}
-{{ generics.movie(data) }}
+{{ generics.movie(data, vibes) }}
 {% elif main_type == "game" %}
-{{ generics.game(data) }}
+{{ generics.game(data, vibes) }}
 {% elif main_type == "book" %}
-{{ generics.book(data) }}
+{{ generics.book(data, vibes) }}
 {% else %}
 {{ generics.album(data, vibes) }}
 {% endif %}

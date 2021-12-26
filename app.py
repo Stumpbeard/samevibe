@@ -169,7 +169,7 @@ def search_movies(q):
 
 
 def search_books(q):
-    url = f"{GBOOKS_API}/volumes?q={q}&key={BOOKS_KEY}"
+    url = f"{GBOOKS_API}/volumes?q={q}&orderBy=relevance"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response).get("items")
 
@@ -209,7 +209,7 @@ def get_game(id):
 
 
 def get_book(id):
-    url = f"{GBOOKS_API}/volumes/{id}?key={BOOKS_KEY}"
+    url = f"{GBOOKS_API}/volumes/{id}"
     response = requests.get(url, headers=HEADERS).content
     result = json.loads(response)
 

@@ -28,6 +28,8 @@ class Album:
 @dataclass
 class Movie:
     id: str
+    director: str
+    writer: str
     title: str
     year: int
     rating: str
@@ -39,6 +41,8 @@ class Movie:
     def from_omdb(cls, result):
         return cls(
             id=result.get("imdbID"),
+            director=result.get("Director"),
+            writer=result.get("Writer"),
             title=result.get("Title"),
             year=result.get("Year"),
             rating=result.get("Rated"),
@@ -54,6 +58,8 @@ class Game:
     title: str
     year: int
     genres: str
+    developers: str
+    rating: str
     image_url: str
 
     @classmethod
@@ -66,6 +72,10 @@ class Game:
             title=result.get("name"),
             year=result.get("released", "") or ""[:4],
             genres=", ".join([genre["name"] for genre in result.get("genres", [])]),
+            developers=", ".join(
+                [genre["name"] for genre in result.get("developers", [])]
+            ),
+            rating=result.get("esrb_rating", {}).get("name"),
             image_url=resized_image,
         )
 
@@ -75,8 +85,11 @@ class Book:
     id: str
     title: str
     author: str
+    publisher: str
+    pages: int
     year: int
     description: str
+    genre: str
     image_url: str
 
     @classmethod
@@ -86,8 +99,11 @@ class Book:
             id=result.get("id"),
             title=data.get("title"),
             author=", ".join(data.get("authors", [])),
+            publisher=data.get("publisher"),
+            pages=data.get("pageCount"),
             year=data.get("publishedDate", "")[:4],
             description=data.get("description"),
+            genre=", ".join(data.get("categories", [])),
             image_url=data.get("imageLinks", {}).get("thumbnail"),
         )
 

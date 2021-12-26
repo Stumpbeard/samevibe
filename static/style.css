@@ -139,6 +139,11 @@ hr {
 
 .row-values > span {
     font-size: 12pt;
+    text-overflow: ellipsis;
+}
+
+.row-values > span::after {
+    content: "\00a0";
 }
 
 .footer-text {
