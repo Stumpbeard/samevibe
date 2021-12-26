@@ -1,6 +1,42 @@
 {% import "generics.html" as generics %}
 
-<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+{% if main_type == "movie" %}
+{{ generics.movie(primary, primary_vibes) }}
+{% elif main_type == "game" %}
+{{ generics.game(primary, primary_vibes) }}
+{% elif main_type == "book" %}
+{{ generics.book(primary, primary_vibes) }}
+{% else %}
+{{ generics.album(primary, primary_vibes) }}
+{% endif %}
+
+<div class="find-similar">
+    <p>What's the vibe?</p>
+    <form action="/{{ main_type }}/{{ primary.id }}" method="post">
+        <input name="vibe">
+        <input name="related_id" value="{{ related.id }}" hidden>
+        <input name="type" value="{{ type }}" hidden>
+        <button>Submit</button>
+    </form>
+</div>
+
+<div class="flip-children">
+    {% if type == "movie" %}
+    {{ generics.movie(related, related_vibes) }}
+    {% elif type == "game" %}
+    {{ generics.game(related, related_vibes) }}
+    {% elif type == "book" %}
+    {{ generics.book(related, related_vibes) }}
+    {% else %}
+    {{ generics.album(related, related_vibes) }}
+    {% endif %}
+    {% endblock %}
+</div>
+
+
 <a href="/">back</a>
 <div style="display: flex;">
     <div>

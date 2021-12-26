@@ -105,6 +105,8 @@ def relate_items(main_type, id, type, related_id):
     else:
         primary = get_album(id)
 
+    primary_vibes = db.find_vibes(primary.id)
+
     if type == "movie":
         related = get_movie(related_id)
     elif type == "game":
@@ -114,11 +116,15 @@ def relate_items(main_type, id, type, related_id):
     else:
         related = get_album(related_id)
 
+    related_vibes = db.find_vibes(related.id)
+
     return render_template(
         "relate-items.html",
         main_type=main_type,
-        primary=primary.__dict__,
-        related=related.__dict__,
+        primary=primary,
+        primary_vibes=primary_vibes,
+        related=related,
+        related_vibes=related_vibes,
         type=type,
     )
 

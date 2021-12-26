@@ -28,7 +28,7 @@
 <button>{{ submit_button }}</button>
 {% endmacro %}
 
-{% macro movie(data, vibes) %}
+{% macro movie(data, vibes=[]) %}
 <div class="details-content columns">
     <div>
         <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
@@ -116,7 +116,7 @@
 </div>
 {% endmacro %}
 
-{% macro game(data, vibes) %}
+{% macro game(data, vibes=[]) %}
 <div class="details-content columns">
     <div>
         <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
@@ -153,7 +153,7 @@
 </div>
 {% endmacro %}
 
-{% macro book(data, vibes) %}
+{% macro book(data, vibes=[]) %}
 <div class="details-content columns">
     <div>
         <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>

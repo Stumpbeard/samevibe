@@ -111,9 +111,15 @@ h3 {
     flex-direction: column;
 }
 
+.flip-children > * {
+    flex-direction: row-reverse;
+}
+
+
 .details-text {
     flex: 1 1 auto;
     margin: 5ch;
+    margin-bottom: 0;
 }
 
 .right-margin {
