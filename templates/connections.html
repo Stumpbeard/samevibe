@@ -19,7 +19,7 @@
 <ul class="search-results">
     {% for result in connections %}
     <li>
-        <a href="/{{ main_type }}/{{ id }}/connect/{{ type }}/{{ result.id }}" class="search-row">
+        <a href="/{{ result.type }}/{{ result.id }}" class="search-row">
             <div class="search-image" style="background-image:  url('{{ result.image_url }}');"></div>
             <div class="search-text">
                 <span class="bold">{{ result.creator }}</span>
@@ -31,27 +31,3 @@
     {% endfor %}
 </ul>
 {% endblock %}
-
-<a href="/{{ main_type }}/{{ main_id }}">back</a>
-<p>Vibe: {{ vibe }}</p>
-<ul>
-    {% for connection in connections %}
-    {% if connection.type == "movie" %}
-    <a href="/movie/{{ connection.id }}">
-        <li>{{ connection.title }} ({{ connection.year }})</li>
-    </a>
-    {% elif connection.type == "game" %}
-    <a href="/game/{{ connection.id }}">
-        <li>{{ connection.title }} ({{ connection.year }})</li>
-    </a>
-    {% elif connection.type == "book" %}
-    <a href="/book/{{ connection.id }}">
-        <li>{{ connection.title }} ({{ connection.author }}; {{ connection.year }})</li>
-    </a>
-    {% else %}
-    <a href="/album/{{ connection.id }}">
-        <li>{{ connection.artist }} - {{ connection.title }}</li>
-    </a>
-    {% endif %}
-    {% endfor %}
-</ul>
