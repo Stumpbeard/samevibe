@@ -55,6 +55,10 @@ p {
     margin-top: 1ch;
 }
 
+h3 {
+    margin-top: 1ch;
+    font-weight: lighter;
+}
 .search-image {
     min-height: 10ch;
     min-width: 10ch;
@@ -152,4 +156,38 @@ footer {
 
 .show-link-line {
     text-decoration-line: underline;
+}
+
+.vibe-list {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding: 0;
+}
+
+.vibe-list > li::after {
+    content: ",\00a0";
+}
+
+.vibe-list > li:last-child::after {
+    content: "";
+}
+
+.tracklist {
+    height: 6ch;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding-left: 0;
+}
+
+.tracklist > * {
+    font-size: 12pt;
+    
+}
+
+.find-similar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 3ch;
 }

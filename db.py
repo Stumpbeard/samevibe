@@ -1,5 +1,7 @@
 import sqlite3
 
+from serializers import Vibe
+
 
 def init_db():
     with open("sql/create_tables.sql") as f:
@@ -48,7 +50,7 @@ def find_vibes(id):
         (id, id),
     ).fetchall()
 
-    return results
+    return [Vibe(name=result[0], count=result[1]) for result in results]
 
 
 def find_connections_by_vibe(id, vibe):

@@ -29,14 +29,44 @@
 {% endmacro %}
 
 {% macro movie(data) %}
-<p>{{ data.title }} ({{ data.year }})</p>
-<p>Rated {{ data.rating }}</p>
-<p>Genre: {{ data.genres }}</p>
-<p>Runtime: {{ data.runtime }}</p>
+<div class="details-content columns">
+    <div>
+        <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
+    </div>
+    <div class="details-text">
+        <h2 class="big-text">{{ data.title }}</h2>
+        <hr>
+        <div class="columns">
+            <div class="rows right-margin row-names">
+                <span>Release</span>
+                <span>Rating</span>
+                <span>Runtime</span>
+                <span>Genres</span>
+            </div>
+            <div class="rows row-values">
+                <span>{{ data.year }}</span>
+                <span>{{ data.rating }}</span>
+                <span>{{ data.runtime }}</span>
+                <span>{{ data.genres }}</span>
+            </div>
+        </div>
+        <div class="rows">
+            <h3>Top Vibes</h3>
+            {% if vibes|length == 0 %}
+            <span>No vibes yet... add some!</span>
+            {% endif %}
+            <ol class="vibe-list">
+                {% for vibe in vibes %}
+                <li>{{ vibe.name }} ({{ vibe.count }})</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
 {% endmacro %}
 
-{% macro album(data) %}
-<div class="columns">
+{% macro album(data, vibes=[]) %}
+<div class="details-content columns">
     <div>
         <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
     </div>
@@ -48,12 +78,35 @@
                 <span>Artist</span>
                 <span>Release</span>
                 <span>Genres</span>
+                <span>Tracklist</span>
             </div>
             <div class="rows row-values">
                 <span>{{ data.artist }}</span>
                 <span>{{ data.year }}</span>
                 <span>{{ data.genre }}</span>
+                <span>
+                    <ol class="tracklist">
+                        {% for track in data.tracklist %}
+                        <li>{{ track.title }}
+                            {% if track.duration %}
+                            - {{ track.duration}}
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </span>
             </div>
+        </div>
+        <div class="rows">
+            <h3>Top Vibes</h3>
+            {% if vibes|length == 0 %}
+            <span>No vibes yet... add some!</span>
+            {% endif %}
+            <ol class="vibe-list">
+                {% for vibe in vibes %}
+                <li>{{ vibe.name }} ({{ vibe.count }})</li>
+                {% endfor %}
+            </ol>
         </div>
     </div>
 </div>

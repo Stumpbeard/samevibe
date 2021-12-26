@@ -10,58 +10,29 @@
 {% elif main_type == "book" %}
 {{ generics.book(data) }}
 {% else %}
-{{ generics.album(data) }}
+{{ generics.album(data, vibes) }}
 {% endif %}
 
-{% if vibes %}
-<p>Top vibes:</p>
-<ol>
-    {% for vibe in vibes %}
-    <a class="show-link-line" href="/{{ main_type }}/{{ id }}/vibe/{{ vibe[0] }}">
-        <li>{{ vibe[0] }}: {{ vibe[1] }}</li>
-    </a>
-    {% endfor %}
-</ol>
-{% endif %}
-
-<form action="" method="get">
-    {{ generics.search_bar("Similar?") }}
-</form>
+<div class="find-similar">
+    <p>Think of anything similar?</p>
+    <form action="" method="get">
+        {{ generics.search_bar("Search", subsearch_text, type) }}
+    </form>
+</div>
 {% if results %}
-{% if type == "movie" %}
-<ul>
+<ul class="search-results">
     {% for result in results %}
-    <a href="/{{ main_type }}/{{ id }}/connect/movie/{{ result.imdbID }}">
-        <li>{{ result.Title }} ({{ result.Year }})</li>
-    </a>
+    <li>
+        <a href="/{{ main_type }}/{{ id }}/connect/{{ type }}/{{ result.id }}" class="search-row">
+            <div class="search-image" style="background-image:  url('{{ result.image_url }}');"></div>
+            <div class="search-text">
+                <span class="bold">{{ result.creator }}</span>
+                <span>{{ result.title }} <span class="light">({{ result.year }})</span></span>
+                <span class="subtext">{{ result.genre }}</span>
+            </div>
+        </a>
+    </li>
     {% endfor %}
 </ul>
-{% elif type == "game" %}
-<ul>
-    {% for result in results %}
-    <a href="/{{ main_type }}/{{ id }}/connect/game/{{ result.id }}">
-        <li>{{ result.name }} ({{ result.released[:4] if result.released else "?" }})</li>
-    </a>
-    {% endfor %}
-</ul>
-{% elif type == "book" %}
-<ul>
-    {% for result in results %}
-    <a href="/{{ main_type }}/{{ id }}/connect/book/{{ result.id }}">
-        <li>{{ result.volumeInfo.title }} ({% for author in result.volumeInfo.authors %}{{ author }}{{ ", " if not
-            loop.last else "" }}{% endfor %}; {{ result.volumeInfo.publishedDate[:4] if
-            result.volumeInfo.publishedDate else "?" }})</li>
-    </a>
-    {% endfor %}
-</ul>
-{% else %}
-<ul>
-    {% for result in results %}
-    <a href="/{{ main_type }}/{{ id }}/connect/album/{{ result.id }}">
-        <li>{{ result.title }}</li>
-    </a>
-    {% endfor %}
-</ul>
-{% endif %}
 {% endif %}
 {% endblock %}

@@ -148,3 +148,9 @@ class SearchResult:
             ),
             image_url=result.get("background_image"),
         )
+
+
+@dataclass
+class Vibe:
+    name: str
+    count: int

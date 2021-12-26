@@ -90,6 +90,7 @@ def details(main_type, id):
         type=type,
         data=data,
         main_type=main_type,
+        subsearch_text=q or "",
     )
 
 
