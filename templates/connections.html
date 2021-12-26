@@ -1,4 +1,37 @@
-<!DOCTYPE html>
+{% import "generics.html" as generics %}
+
+{% extends 'base.html' %}
+
+{% block content %}
+{% if main_type == "movie" %}
+{{ generics.movie(data, vibes) }}
+{% elif main_type == "game" %}
+{{ generics.game(data, vibes) }}
+{% elif main_type == "book" %}
+{{ generics.book(data, vibes) }}
+{% else %}
+{{ generics.album(data, vibes) }}
+{% endif %}
+
+<div class="find-similar">
+    <h2>Vibe: {{ vibe }}</h2>
+</div>
+<ul class="search-results">
+    {% for result in connections %}
+    <li>
+        <a href="/{{ main_type }}/{{ id }}/connect/{{ type }}/{{ result.id }}" class="search-row">
+            <div class="search-image" style="background-image:  url('{{ result.image_url }}');"></div>
+            <div class="search-text">
+                <span class="bold">{{ result.creator }}</span>
+                <span>{{ result.title }} <span class="light">({{ result.year }})</span></span>
+                <span class="subtext">{{ result.genre }}</span>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
 <a href="/{{ main_type }}/{{ main_id }}">back</a>
 <p>Vibe: {{ vibe }}</p>
 <ul>

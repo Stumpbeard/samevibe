@@ -131,21 +131,32 @@ def relate_items(main_type, id, type, related_id):
 
 @app.route("/<main_type>/<id>/vibe/<vibe>")
 def list_vibe_connections(main_type, id, vibe):
+    if main_type == "movie":
+        data = get_movie(id)
+    elif main_type == "game":
+        data = get_game(id)
+    elif main_type == "book":
+        data = get_book(id)
+    else:
+        data = get_album(id)
+
+    vibes = db.find_vibes(id)
+
     connection_ids = db.find_connections_by_vibe(id, vibe)
     connections = []
     for connection in connection_ids:
         connection_id = connection[0]
         type = connection[1]
         if type == "movie":
-            connection = get_movie(connection_id).__dict__
+            connection = get_movie(connection_id)
         elif type == "game":
-            connection = get_game(connection_id).__dict__
+            connection = get_game(connection_id)
         elif type == "book":
-            connection = get_book(connection_id).__dict__
+            connection = get_book(connection_id)
         else:
-            connection = get_album(connection_id).__dict__
-        connection["id"] = connection_id
-        connection["type"] = type
+            connection = get_album(connection_id)
+
+        connection = SearchResult.from_serial(connection, type)
 
         connections.append(connection)
 
@@ -155,6 +166,8 @@ def list_vibe_connections(main_type, id, vibe):
         main_id=id,
         vibe=vibe,
         main_type=main_type,
+        data=data,
+        vibes=vibes,
     )
 
 

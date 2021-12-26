@@ -18,6 +18,9 @@
     <form action="" method="get">
         {{ generics.search_bar("Search", subsearch_text, type) }}
     </form>
+    {% if results %}
+    <p>Pick one below.</p>
+    {% endif %}
 </div>
 {% if results %}
 <ul class="search-results">

@@ -34,7 +34,9 @@
         <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
     </div>
     <div class="details-text">
-        <h2 class="big-text">{{ data.title }}</h2>
+        <a href="/movie/{{ data.id }}">
+            <h2 class="big-text">{{ data.title }}</h2>
+        </a>
         <hr>
         <div class="columns">
             <div class="rows right-margin row-names">
@@ -61,7 +63,7 @@
             {% endif %}
             <ol class="vibe-list">
                 {% for vibe in vibes %}
-                <li>{{ vibe.name }} ({{ vibe.count }})</li>
+                <li><a href="/movie/{{ data.id }}/vibe/{{ vibe.name }}">{{ vibe.name }} ({{ vibe.count }})</a></li>
                 {% endfor %}
             </ol>
         </div>
@@ -75,7 +77,9 @@
         <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
     </div>
     <div class="details-text">
-        <h2 class="big-text">{{ data.title }}</h2>
+        <a href="/album/{{ data.id }}">
+            <h2 class="big-text">{{ data.title }}</h2>
+        </a>
         <hr>
         <div class="columns">
             <div class="rows right-margin row-names">
@@ -108,7 +112,7 @@
             {% endif %}
             <ol class="vibe-list">
                 {% for vibe in vibes %}
-                <li>{{ vibe.name }} ({{ vibe.count }})</li>
+                <li><a href="/album/{{ data.id }}/vibe/{{ vibe.name }}">{{ vibe.name }} ({{ vibe.count }})</a></li>
                 {% endfor %}
             </ol>
         </div>
@@ -122,7 +126,9 @@
         <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
     </div>
     <div class="details-text">
-        <h2 class="big-text">{{ data.title }}</h2>
+        <a href="/game/{{ data.id }}">
+            <h2 class="big-text">{{ data.title }}</h2>
+        </a>
         <hr>
         <div class="columns">
             <div class="rows right-margin row-names">
@@ -145,7 +151,7 @@
             {% endif %}
             <ol class="vibe-list">
                 {% for vibe in vibes %}
-                <li>{{ vibe.name }} ({{ vibe.count }})</li>
+                <li><a href="/game/{{ data.id }}/vibe/{{ vibe.name }}">{{ vibe.name }} ({{ vibe.count }})</a></li>
                 {% endfor %}
             </ol>
         </div>
@@ -159,7 +165,9 @@
         <div class="main-image" style="background-image:  url('{{ data.image_url }}');"></div>
     </div>
     <div class="details-text">
-        <h2 class="big-text">{{ data.title }}</h2>
+        <a href="/book/{{ data.id }}">
+            <h2 class="big-text">{{ data.title }}</h2>
+        </a>
         <hr>
         <div class="columns">
             <div class="rows right-margin row-names">
@@ -184,7 +192,7 @@
             {% endif %}
             <ol class="vibe-list">
                 {% for vibe in vibes %}
-                <li>{{ vibe.name }} ({{ vibe.count }})</li>
+                <li><a href="/book/{{ data.id }}/vibe/{{ vibe.name }}">{{ vibe.name }} ({{ vibe.count }})</a></li>
                 {% endfor %}
             </ol>
         </div>

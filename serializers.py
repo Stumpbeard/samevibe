@@ -64,7 +64,7 @@ class Game:
 
     @classmethod
     def from_rawg(cls, result):
-        resized_image = result.get("background_image", "").replace(
+        resized_image = (result.get("background_image", "") or "").replace(
             "io/media/", "io/media/resize/420/-/"
         )
         return cls(
@@ -75,7 +75,7 @@ class Game:
             developers=", ".join(
                 [genre["name"] for genre in result.get("developers", [])]
             ),
-            rating=result.get("esrb_rating", {}).get("name"),
+            rating=(result.get("esrb_rating", {}) or {}).get("name"),
             image_url=resized_image,
         )
 
@@ -116,6 +116,7 @@ class SearchResult:
     year: str
     genre: str
     image_url: str
+    type: str
 
     @classmethod
     def from_discogs(cls, result):
@@ -127,6 +128,7 @@ class SearchResult:
             year=result.get("year"),
             genre=", ".join(result.get("style")),
             image_url=result.get("cover_image"),
+            type="album",
         )
 
     @classmethod
@@ -138,6 +140,7 @@ class SearchResult:
             year=result.get("Year"),
             genre="",
             image_url=result.get("Poster"),
+            type="movie",
         )
 
     @classmethod
@@ -150,6 +153,7 @@ class SearchResult:
             year=data.get("publishedDate"),
             genre="",
             image_url=data.get("imageLinks", {}).get("thumbnail"),
+            type="book",
         )
 
     @classmethod
@@ -163,6 +167,28 @@ class SearchResult:
                 [genre.get("name", "") for genre in result.get("genres", [])]
             ),
             image_url=result.get("background_image"),
+            type="game",
+        )
+
+    @classmethod
+    def from_serial(cls, data, type):
+        if type == "movie":
+            creator = data.director
+        if type == "album":
+            creator = data.artist
+        if type == "book":
+            creator = data.author
+        if type == "game":
+            creator = data.developers
+
+        return cls(
+            id=data.id,
+            creator=creator,
+            title=data.title,
+            year=data.year,
+            genre=data.genres if type in ["game", "movie"] else data.genre,
+            image_url=data.image_url,
+            type=type,
         )
 
 
