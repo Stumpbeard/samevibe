@@ -34,6 +34,11 @@ def hello_world():
     return render_template("hello.html", most_recent_vibes=most_recent_vibes)
 
 
+@app.route("/loaderio-9f5e57e7decacfa267f90d5884bb7d0b/")
+def load_test():
+    return "loaderio-9f5e57e7decacfa267f90d5884bb7d0b"
+
+
 @app.route("/search")
 def search():
     q = request.args.get("q")
