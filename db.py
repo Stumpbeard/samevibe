@@ -1,7 +1,7 @@
 import json
 import sqlite3
 
-from serializers import Album, Vibe
+from serializers import Album, Game, Vibe
 
 
 def init_db():
@@ -105,6 +105,38 @@ def save_album(album):
     )
 
     connection.commit()
+
+
+def save_game(game):
+    connection = sqlite3.connect("samevibe.db")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "INSERT INTO games (source_id, developers, title, rating, image_url, year, genres) VAlUES (?, ?, ?, ?, ?, ?, ?);",
+        (
+            game.id,
+            game.developers,
+            game.title,
+            game.rating,
+            game.image_url,
+            game.year,
+            game.genres,
+        ),
+    )
+
+    connection.commit()
+
+
+def get_game(id):
+    cursor = get_cursor()
+    result = cursor.execute(
+        "SELECT * FROM games WHERE source_id = ? LIMIT 1;", (id,)
+    ).fetchall()
+
+    if len(result) > 0:
+        return Game.from_sqlite(result[0])
+    else:
+        return None
 
 
 def get_album(id):

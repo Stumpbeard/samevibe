@@ -95,6 +95,18 @@ class Game:
             image_url=resized_image,
         )
 
+    @classmethod
+    def from_sqlite(cls, data):
+        return cls(
+            id=data[1],
+            developers=data[2],
+            title=data[3],
+            rating=data[4],
+            image_url=data[5],
+            year=data[6],
+            genres=data[7],
+        )
+
 
 @dataclass
 class Book:

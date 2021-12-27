@@ -229,11 +229,17 @@ def get_movie(id):
 
 
 def get_game(id):
+    game = db.get_game(id)
+    if game:
+        return game
+
     url = f"{RAWG_API}/games/{id}?key={GAMES_KEY}"
     response = requests.get(url, headers=HEADERS).content
     result = json.loads(response)
+    game = Game.from_rawg(result)
+    db.save_game(game)
 
-    return Game.from_rawg(result)
+    return game
 
 
 def get_book(id):

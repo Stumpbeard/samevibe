@@ -19,3 +19,15 @@ CREATE TABLE IF NOT EXISTS albums
     year INTEGER,
     genre TEXT
 );
+
+CREATE TABLE IF NOT EXISTS games
+(
+    id INTEGER PRIMARY KEY,
+    source_id TEXT NOT NULL,
+    developers TEXT,
+    title TEXT,
+    rating TEXT,
+    image_url TEXT,
+    year INTEGER,
+    genres TEXT
+);
