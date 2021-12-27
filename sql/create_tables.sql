@@ -31,3 +31,17 @@ CREATE TABLE IF NOT EXISTS games
     year INTEGER,
     genres TEXT
 );
+
+CREATE TABLE IF NOT EXISTS books
+(
+    id INTEGER PRIMARY KEY,
+    source_id TEXT NOT NULL,
+    author TEXT,
+    title TEXT,
+    pages INTEGER,
+    image_url TEXT,
+    year INTEGER,
+    genre TEXT,
+    publisher TEXT,
+    description TEXT
+);

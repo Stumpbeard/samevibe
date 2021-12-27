@@ -1,7 +1,7 @@
 import json
 import sqlite3
 
-from serializers import Album, Game, Vibe
+from serializers import Album, Book, Game, Vibe
 
 
 def init_db():
@@ -127,6 +127,28 @@ def save_game(game):
     connection.commit()
 
 
+def save_book(book: Book):
+    connection = sqlite3.connect("samevibe.db")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "INSERT INTO books (source_id, author, title, pages, image_url, year, genre, publisher, description) VAlUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
+        (
+            book.id,
+            book.author,
+            book.title,
+            book.pages,
+            book.image_url,
+            book.year,
+            book.genre,
+            book.publisher,
+            book.description,
+        ),
+    )
+
+    connection.commit()
+
+
 def get_game(id):
     cursor = get_cursor()
     result = cursor.execute(
@@ -147,5 +169,17 @@ def get_album(id):
 
     if len(result) > 0:
         return Album.from_sqlite(result[0])
+    else:
+        return None
+
+
+def get_book(id):
+    cursor = get_cursor()
+    result = cursor.execute(
+        "SELECT * FROM books WHERE source_id = ? LIMIT 1;", (id,)
+    ).fetchall()
+
+    if len(result) > 0:
+        return Book.from_sqlite(result[0])
     else:
         return None

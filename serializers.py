@@ -136,6 +136,20 @@ class Book:
             image_url=data.get("imageLinks", {}).get("thumbnail"),
         )
 
+    @classmethod
+    def from_sqlite(cls, data):
+        return cls(
+            id=data[1],
+            author=data[2],
+            title=data[3],
+            pages=data[4],
+            image_url=data[5],
+            year=data[6],
+            genre=data[7],
+            publisher=data[8],
+            description=data[9],
+        )
+
 
 @dataclass
 class SearchResult:

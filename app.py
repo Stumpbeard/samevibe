@@ -243,11 +243,17 @@ def get_game(id):
 
 
 def get_book(id):
+    book = db.get_book(id)
+    if book:
+        return book
+
     url = f"{GBOOKS_API}/volumes/{id}"
     response = requests.get(url, headers=HEADERS).content
     result = json.loads(response)
+    book = Book.from_google(result)
+    db.save_book(book)
 
-    return Book.from_google(result)
+    return book
 
 
 def make_vibe_pairs(vibes):
