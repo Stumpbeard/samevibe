@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import json
 from typing import List
 
 
@@ -23,6 +24,18 @@ class Album:
             image_url=results.get("images", [None])[0].get("resource_url"),
             year=results.get("year"),
             genre=", ".join(results.get("styles")),
+        )
+
+    @classmethod
+    def from_sqlite(cls, data):
+        return cls(
+            id=data[1],
+            artist=data[2],
+            title=data[3],
+            tracklist=json.loads(data[4]),
+            image_url=data[5],
+            year=data[6],
+            genre=data[7],
         )
 
 

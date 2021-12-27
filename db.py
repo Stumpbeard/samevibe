@@ -1,6 +1,7 @@
+import json
 import sqlite3
 
-from serializers import Vibe
+from serializers import Album, Vibe
 
 
 def init_db():
@@ -84,3 +85,35 @@ def get_cursor():
     cursor = connection.cursor()
 
     return cursor
+
+
+def save_album(album):
+    connection = sqlite3.connect("samevibe.db")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "INSERT INTO albums (source_id, artist, title, tracklist, image_url, year, genre) VAlUES (?, ?, ?, ?, ?, ?, ?);",
+        (
+            album.id,
+            album.artist,
+            album.title,
+            json.dumps(album.tracklist),
+            album.image_url,
+            album.year,
+            album.genre,
+        ),
+    )
+
+    connection.commit()
+
+
+def get_album(id):
+    cursor = get_cursor()
+    result = cursor.execute(
+        "SELECT * FROM albums WHERE source_id = ? LIMIT 1;", (id,)
+    ).fetchall()
+
+    if len(result) > 0:
+        return Album.from_sqlite(result[0])
+    else:
+        return None

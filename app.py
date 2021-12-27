@@ -207,9 +207,15 @@ def search_games(q):
 
 
 def get_album(id):
+    album = db.get_album(id)
+    if album:
+        return album
+
     url = f"{DISCOGS_API}/masters/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response)
+    album = Album.from_discogs(results)
+    db.save_album(album)
 
     return Album.from_discogs(results)
 

@@ -7,3 +7,15 @@ CREATE TABLE IF NOT EXISTS relationships
     secondary_type TEXT NOT NULL,
     vibe TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS albums
+(
+    id INTEGER PRIMARY KEY,
+    source_id TEXT NOT NULL,
+    artist TEXT,
+    title TEXT,
+    tracklist TEXT,
+    image_url TEXT,
+    year INTEGER,
+    genre TEXT
+);
