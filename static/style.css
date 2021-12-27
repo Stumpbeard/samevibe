@@ -27,6 +27,7 @@ body {
 nav {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
     background: var(--color-2);
     padding: 1ch;
@@ -48,7 +49,8 @@ ul {
 }
 
 .content {
-    width: 90ch;
+    max-width: 90ch;
+    width: 100%;
     background: var(--color-1);
     display: flex;
     flex-direction: column;
@@ -73,8 +75,8 @@ h3 {
 }
 
 .main-image {
-    min-height: 30ch;
-    min-width: 30ch;
+    max-height: calc(100vw - 4ch);
+    max-width: calc(100vw - 4ch);
     width: 30ch;
     height: 30ch;
     background-size: cover;
@@ -111,6 +113,7 @@ h3 {
 
 .columns {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .rows {
@@ -127,6 +130,7 @@ h3 {
     flex: 1 1 auto;
     margin: 5ch;
     margin-bottom: 0;
+    max-width: 45ch;
 }
 
 .right-margin {
@@ -178,7 +182,7 @@ footer {
 
 .vibe-list {
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     list-style: none;
     padding: 0;
 }
