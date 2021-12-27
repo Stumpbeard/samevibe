@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="/vibes" method="get">
+    <label for="vibe-search">Looking for a vibe?</label>
+    <input id="vibe-search" name="q" value="{{ search }}">
+    <button>Search</button>
+</form>
+
+<ul class="search-results">
+    {% for vibe in vibes %}
+    <li>
+        <a href="/vibes/{{ vibe.vibe }}" class="search-row">
+            <div class="search-text">
+                <span class="bold">{{ vibe.vibe }} - {{ vibe.count }}</span>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

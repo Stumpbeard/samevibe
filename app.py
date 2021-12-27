@@ -51,6 +51,26 @@ def search():
     )
 
 
+@app.route("/vibes")
+def vibe_search():
+    q = request.args.get("q")
+    vibes = db.search_vibes(q)
+
+    return render_template("vibe-search.html", search=q, vibes=vibes)
+
+
+@app.route("/vibes/<vibe>")
+def vibe_page(vibe):
+    ids = db.search_unique_ids_for_vibe(vibe)
+    results = []
+    for id in ids:
+        media = get_item_by_type(id[0], id[1])
+        item = SearchResult.from_serial(media, media.type)
+        results.append(item)
+
+    return render_template("list-media-for-vibe.html", results=results, vibe=vibe)
+
+
 @app.route("/<main_type>/<id>", methods=["GET", "POST"])
 def details(main_type, id):
     if request.method == "POST":

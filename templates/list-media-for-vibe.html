@@ -1,23 +1,14 @@
-{% import "generics.html" as generics %}
-
 {% extends 'base.html' %}
 
 {% block content %}
-{% if main_type == "movie" %}
-{{ generics.movie(data, vibes) }}
-{% elif main_type == "game" %}
-{{ generics.game(data, vibes) }}
-{% elif main_type == "book" %}
-{{ generics.book(data, vibes) }}
-{% else %}
-{{ generics.album(data, vibes) }}
-{% endif %}
+<form action="/vibes" method="get">
+    <label for="vibe-search">Looking for a vibe?</label>
+    <input id="vibe-search" name="q" value="{{ vibe }}">
+    <button>Search</button>
+</form>
 
-<div class="find-similar">
-    <h2>Vibe: {{ vibe }}</h2>
-</div>
 <ul class="search-results">
-    {% for result in connections %}
+    {% for result in results %}
     <li>
         <a href="/{{ result.type }}/{{ result.id }}" class="search-row">
             <div class="search-image" style="background-image:  url('{{ result.image_url }}');"></div>

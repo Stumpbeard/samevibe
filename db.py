@@ -54,6 +54,33 @@ def find_vibes(id):
     return [Vibe(name=result[0], count=result[1]) for result in results]
 
 
+def search_vibes(q):
+    connection = sqlite3.connect("samevibe.db")
+    cursor = connection.cursor()
+    results = cursor.execute(
+        "SELECT vibe, count(id) FROM relationships WHERE vibe LIKE ? GROUP BY vibe",
+        (f"%{q}%",),
+    ).fetchall()
+
+    return [{"vibe": result[0], "count": result[1]} for result in results]
+
+
+def search_unique_ids_for_vibe(vibe):
+    connection = sqlite3.connect("samevibe.db")
+    cursor = connection.cursor()
+    results = cursor.execute(
+        "SELECT * FROM relationships WHERE vibe LIKE ?",
+        (f"%{vibe}%",),
+    ).fetchall()
+
+    ids = set()
+    for result in results:
+        ids.add((result[1], result[2]))
+        ids.add((result[3], result[4]))
+
+    return list(ids)
+
+
 def get_all_vibes(limit=10):
     connection = sqlite3.connect("samevibe.db")
     cursor = connection.cursor()

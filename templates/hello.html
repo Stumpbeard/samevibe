@@ -22,4 +22,10 @@
     </div>
     {% endfor %}
 </div>
+
+<form action="/vibes" method="get">
+    <label for="vibe-search">Looking for a vibe?</label>
+    <input id="vibe-search" name="q">
+    <button>Search</button>
+</form>
 {% endblock %}
