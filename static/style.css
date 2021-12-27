@@ -226,6 +226,7 @@ footer {
     width: 10ch;
     height: 20ch;
     position: relative;
+    background-size: cover;
 }
 
 .vibe-pair-container > div > a{
