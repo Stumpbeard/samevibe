@@ -59,3 +59,5 @@ CREATE TABLE IF NOT EXISTS movies
     writer TEXT,
     runtime TEXT
 );
+
+PRAGMA journal_mode=WAL;
