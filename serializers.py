@@ -11,6 +11,7 @@ class Album:
     image_url: str
     year: int
     genre: str
+    type: str = "album"
 
     @classmethod
     def from_discogs(cls, results):
@@ -36,6 +37,7 @@ class Movie:
     genres: str
     runtime: str
     image_url: str
+    type: str = "movie"
 
     @classmethod
     def from_omdb(cls, result):
@@ -61,6 +63,7 @@ class Game:
     developers: str
     rating: str
     image_url: str
+    type: str = "game"
 
     @classmethod
     def from_rawg(cls, result):
@@ -91,6 +94,7 @@ class Book:
     description: str
     genre: str
     image_url: str
+    type: str = "book"
 
     @classmethod
     def from_google(cls, result):

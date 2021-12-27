@@ -10,4 +10,16 @@
     for, link it to something else by a vibe - it can be anything you want. "Russian Post-Apocalypse", "Rainy Days",
     "Trashcore", or "Cerebral", if you can think up two pieces of media with that vibe, you can link them together.</p>
 <p>Help build a collection of cool stuff connected by all the kinds of feelings we have when we enjoy art.</p>
+
+<div class="vibe-pairs">
+    {% for vibe in most_recent_vibes %}
+    <div class="vibe-pair-container">
+        <div style="background-image:  url('{{ vibe.primary.image_url }}');"><a
+                href="/{{ vibe.primary.type }}/{{ vibe.primary.id }}"></a></div>
+        <div style="background-image:  url('{{ vibe.related.image_url }}');"><a
+                href="/{{ vibe.related.type }}/{{ vibe.related.id }}"></a></div>
+        <span>{{ vibe.type }}</span>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

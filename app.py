@@ -28,7 +28,10 @@ db.init_db()
 
 @app.route("/")
 def hello_world():
-    return render_template("hello.html")
+    vibes = db.get_all_vibes()
+    most_recent_vibes = make_vibe_pairs(vibes)
+
+    return render_template("hello.html", most_recent_vibes=most_recent_vibes)
 
 
 @app.route("/search")
@@ -233,3 +236,29 @@ def get_book(id):
     result = json.loads(response)
 
     return Book.from_google(result)
+
+
+def make_vibe_pairs(vibes):
+    vibe_pairs = []
+    for vibe in vibes:
+        vibe_pair = {
+            "primary": get_item_by_type(vibe[1], vibe[2]),
+            "related": get_item_by_type(vibe[3], vibe[4]),
+            "type": vibe[5],
+        }
+        vibe_pairs.append(vibe_pair)
+
+    return vibe_pairs
+
+
+def get_item_by_type(id, type):
+    if type == "movie":
+        return get_movie(id)
+    if type == "book":
+        return get_book(id)
+    if type == "game":
+        return get_game(id)
+    if type == "album":
+        return get_album(id)
+
+    return None

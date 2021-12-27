@@ -53,6 +53,16 @@ def find_vibes(id):
     return [Vibe(name=result[0], count=result[1]) for result in results]
 
 
+def get_all_vibes(limit=10):
+    connection = sqlite3.connect("samevibe.db")
+    cursor = connection.cursor()
+    results = cursor.execute(
+        "SELECT * FROM relationships ORDER BY id desc LIMIT ?;", (limit,)
+    ).fetchall()
+
+    return results
+
+
 def find_connections_by_vibe(id, vibe):
     connection = sqlite3.connect("samevibe.db")
     cursor = connection.cursor()
