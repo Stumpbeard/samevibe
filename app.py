@@ -221,9 +221,15 @@ def get_album(id):
 
 
 def get_movie(id):
+    movie = db.get_movie(id)
+    if movie:
+        return movie
+
     url = f"{OMDB_API}/?apikey={MOVIE_KEY}&i={id}"
     response = requests.get(url, headers=HEADERS).content
     result = json.loads(response)
+    movie = Movie.from_omdb(result)
+    db.save_movie(movie)
 
     return Movie.from_omdb(result)
 

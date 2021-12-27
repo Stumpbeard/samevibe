@@ -66,6 +66,20 @@ class Movie:
             image_url=result.get("Poster"),
         )
 
+    @classmethod
+    def from_sqlite(cls, data):
+        return cls(
+            id=data[1],
+            director=data[2],
+            title=data[3],
+            rating=data[4],
+            image_url=data[5],
+            year=data[6],
+            genres=data[7],
+            writer=data[8],
+            runtime=data[9],
+        )
+
 
 @dataclass
 class Game:

@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS games
     title TEXT,
     rating TEXT,
     image_url TEXT,
-    year INTEGER,
+    year TEXT,
     genres TEXT
 );
 
@@ -44,4 +44,18 @@ CREATE TABLE IF NOT EXISTS books
     genre TEXT,
     publisher TEXT,
     description TEXT
+);
+
+CREATE TABLE IF NOT EXISTS movies
+(
+    id INTEGER PRIMARY KEY,
+    source_id TEXT NOT NULL,
+    director TEXT,
+    title TEXT,
+    rating INTEGER,
+    image_url TEXT,
+    year INTEGER,
+    genres TEXT,
+    writer TEXT,
+    runtime TEXT
 );
