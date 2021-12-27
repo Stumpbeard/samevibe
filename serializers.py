@@ -18,10 +18,12 @@ class Album:
     def from_discogs(cls, results):
         return cls(
             id=results.get("id"),
-            artist=results.get("artists", [None])[0].get("name"),
+            artist=results.get("artists", [{}])[0].get("name"),
             title=results.get("title"),
             tracklist=results.get("tracklist", []),
-            image_url=results.get("images", [None])[0].get("resource_url"),
+            image_url=results.get("images", [{}])[0]
+            .get("resource_url", "")
+            .replace("http://", "https://"),
             year=results.get("year"),
             genre=", ".join(results.get("styles")),
         )
@@ -33,7 +35,7 @@ class Album:
             artist=data[2],
             title=data[3],
             tracklist=json.loads(data[4]),
-            image_url=data[5],
+            image_url=(data[5] or "").replace("http://", "https://"),
             year=data[6],
             genre=data[7],
         )
@@ -63,7 +65,7 @@ class Movie:
             rating=result.get("Rated"),
             genres=result.get("Genre"),
             runtime=result.get("Runtime"),
-            image_url=result.get("Poster"),
+            image_url=result.get("Poster", "").replace("http://", "https://"),
         )
 
     @classmethod
@@ -73,7 +75,7 @@ class Movie:
             director=data[2],
             title=data[3],
             rating=data[4],
-            image_url=data[5],
+            image_url=(data[5] or "").replace("http://", "https://"),
             year=data[6],
             genres=data[7],
             writer=data[8],
@@ -106,7 +108,7 @@ class Game:
                 [genre["name"] for genre in result.get("developers", [])]
             ),
             rating=(result.get("esrb_rating", {}) or {}).get("name"),
-            image_url=resized_image,
+            image_url=resized_image.replace("http://", "https://"),
         )
 
     @classmethod
@@ -116,7 +118,7 @@ class Game:
             developers=data[2],
             title=data[3],
             rating=data[4],
-            image_url=data[5],
+            image_url=(data[5] or "").replace("http://", "https://"),
             year=data[6],
             genres=data[7],
         )
@@ -147,7 +149,11 @@ class Book:
             year=data.get("publishedDate", "")[:4],
             description=data.get("description"),
             genre=", ".join(data.get("categories", [])),
-            image_url=data.get("imageLinks", {}).get("thumbnail"),
+            image_url=data.get("imageLinks", {})
+            .get("thumbnail", "")
+            .replace("http://", "https://")
+            .replace("&zoom=1", "")
+            .replace("&edge=curl", ""),
         )
 
     @classmethod
@@ -157,7 +163,10 @@ class Book:
             author=data[2],
             title=data[3],
             pages=data[4],
-            image_url=data[5],
+            image_url=(data[5] or "")
+            .replace("http://", "https://")
+            .replace("&zoom=1", "")
+            .replace("&edge=curl", ""),
             year=data[6],
             genre=data[7],
             publisher=data[8],
@@ -184,7 +193,7 @@ class SearchResult:
             title=split_title[1],
             year=result.get("year"),
             genre=", ".join(result.get("style")),
-            image_url=result.get("cover_image"),
+            image_url=result.get("cover_image", "").replace("http://", "https://"),
             type="album",
         )
 
@@ -196,7 +205,7 @@ class SearchResult:
             title=result.get("Title"),
             year=result.get("Year"),
             genre="",
-            image_url=result.get("Poster"),
+            image_url=result.get("Poster", "").replace("http://", "https://"),
             type="movie",
         )
 
@@ -209,7 +218,11 @@ class SearchResult:
             title=data.get("title"),
             year=data.get("publishedDate"),
             genre="",
-            image_url=data.get("imageLinks", {}).get("thumbnail"),
+            image_url=data.get("imageLinks", {})
+            .get("thumbnail", "")
+            .replace("http://", "https://")
+            .replace("&zoom=1", "")
+            .replace("&edge=curl", ""),
             type="book",
         )
 
@@ -223,7 +236,7 @@ class SearchResult:
             genre=", ".join(
                 [genre.get("name", "") for genre in result.get("genres", [])]
             ),
-            image_url=result.get("background_image"),
+            image_url=result.get("background_image", "").replace("http://", "https://"),
             type="game",
         )
 
@@ -244,7 +257,10 @@ class SearchResult:
             title=data.title,
             year=data.year,
             genre=data.genres if type in ["game", "movie"] else data.genre,
-            image_url=data.image_url,
+            image_url=(data.image_url or "")
+            .replace("http://", "https://")
+            .replace("&zoom=1", "")
+            .replace("&edge=curl", ""),
             type=type,
         )
 
