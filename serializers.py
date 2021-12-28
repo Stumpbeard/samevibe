@@ -236,7 +236,9 @@ class SearchResult:
             genre=", ".join(
                 [genre.get("name", "") for genre in result.get("genres", [])]
             ),
-            image_url=result.get("background_image", "").replace("http://", "https://"),
+            image_url=(result.get("background_image", "") or "").replace(
+                "http://", "https://"
+            ),
             type="game",
         )
 
