@@ -1,5 +1,6 @@
-import datetime
+from datetime import datetime
 import json
+from logging.config import dictConfig
 import os
 
 from flask import Flask, render_template, request, redirect
@@ -23,13 +24,35 @@ HEADERS = {
 }
 
 
+dictConfig(
+    {
+        "version": 1,
+        "formatters": {
+            "default": {
+                "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+            }
+        },
+        "handlers": {
+            "wsgi": {
+                "class": "logging.StreamHandler",
+                "stream": "ext://flask.logging.wsgi_errors_stream",
+                "formatter": "default",
+            }
+        },
+        "root": {"level": "INFO", "handlers": ["wsgi"]},
+    }
+)
+
+
 app = Flask(__name__)
 db.init_db()
 
 
 @app.route("/")
 def hello_world():
-    vibes = []
+    app.logger.error(datetime.utcnow())
+    vibes = db.get_all_vibes()
+    app.logger.error(datetime.utcnow())
     most_recent_vibes = make_vibe_pairs(vibes)
 
     return render_template("hello.html", most_recent_vibes=most_recent_vibes)
