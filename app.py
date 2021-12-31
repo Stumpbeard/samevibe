@@ -57,7 +57,13 @@ def hello_world():
     app.logger.error(datetime.utcnow())
     most_recent_vibes = make_vibe_pairs(vibes)
 
-    return render_template("hello.html", most_recent_vibes=most_recent_vibes)
+    app.logger.error("Rendering the template")
+    app.logger.error(datetime.utcnow())
+    template = render_template("hello.html", most_recent_vibes=most_recent_vibes)
+    app.logger.error("Returning the template to the requester")
+    app.logger.error(datetime.utcnow())
+
+    return template
 
 
 @app.route("/loaderio-9f5e57e7decacfa267f90d5884bb7d0b/")
