@@ -1,14 +1,19 @@
 :root {
-    --color-0: #eee;
-    --color-1: #ddd;
-    --color-2: #ccc;
-    --color-3: #111;
+    --color-white: #eee;
+    --color-whiter: #fff;
+    --color-1-light: hsl(184, 89%, 80%);
+    --color-1: hsl(184, 89%, 45%);
+    --color-1-dark: hsl(184, 89%, 20%);
+    --color-2-light: hsl(288, 70%, 70%);
+    --color-2: hsl(288, 70%, 37%);
+    --color-2-dark: hsl(288, 70%, 20%);
+    --color-black: #111;
 }
 
 * {
     margin: 0;
     box-sizing: border-box;
-    color: var(--color-3);
+    color: var(--color-black);
     font: 16pt sans-serif;
 }
 
@@ -21,7 +26,7 @@ html, body {
 body {
     display: flex;
     justify-content: center;
-    background: var(--color-0);
+    background: var(--color-whiter);
 }
 
 nav {
@@ -29,13 +34,21 @@ nav {
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
-    background: var(--color-2);
+    background: var(--color-1);
     padding: 1ch;
 }
 
+h1 {
+    color: var(--color-black)
+}
+
 footer {
-    background: var(--color-2);
+    background: var(--color-1);
     padding: 1ch;
+}
+
+footer > * {
+    color: var(--color-black)
 }
 
 section {
@@ -51,13 +64,14 @@ ul {
 .content {
     max-width: 90ch;
     width: 100%;
-    background: var(--color-1);
+    background: var(--color-white);
     display: flex;
     flex-direction: column;
 }
 
 a {
     text-decoration-line: none;
+    color: var(--color-2)
 }
 
 p {
@@ -68,6 +82,27 @@ h3 {
     margin-top: 1ch;
     font-weight: lighter;
 }
+
+button, select {
+    background: var(--color-2);
+    color: var(--color-white);
+    border-width: 0.2ch;
+    border-radius: 1ch;
+    border-color: var(--color-2-light);
+    padding: 0.25ch;
+    padding-left: 0.5ch;
+    padding-right: 0.5ch;
+}
+
+nav > form > input {
+    background: var(--color-1-light);
+    border-color: var(--color-1-dark);
+}
+
+input {
+    border-radius: 1ch;
+}
+
 .search-image {
     min-height: 10ch;
     min-width: 10ch;
@@ -89,7 +124,7 @@ h3 {
 }
 
 .search-results > li:nth-child(even) {
-    background: var(--color-0);
+    background: var(--color-whiter);
 }
 
 .search-text {
@@ -198,7 +233,7 @@ footer {
 .tracklist {
     height: 6ch;
     overflow-y: auto;
-    border: 1px solid var(--color-2);
+    border: 1px solid var(--color-black);
     padding-left: 0;
 }
 
@@ -242,7 +277,8 @@ footer {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    background: #eee;
+    background: var(--color-2);
+    color: var(--color-white);
     padding: 0.5ch;
 }
 
@@ -251,4 +287,8 @@ footer {
     margin-bottom: 3ch;
     margin-top: 3ch;
     overflow-x: scroll;
+}
+
+.nowrap {
+    flex-flow: nowrap;
 }
