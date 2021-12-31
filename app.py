@@ -234,40 +234,58 @@ def search_games(q):
 def get_album(id):
     album = db.get_album(id)
     if album:
+        if album.image_url and "sv_local" not in album.image_url:
+            album.image_url = save_image_locally(album)
+            db.save_album(album)
         return album
 
     url = f"{DISCOGS_API}/masters/{id}?key={MUSIC_KEY}&secret={MUSIC_SECRET}"
     response = requests.get(url, headers=HEADERS).content
     results = json.loads(response)
     album = Album.from_discogs(results)
+    if album.image_url:
+        album.image_url = save_image_locally(album)
+
     db.save_album(album)
 
-    return Album.from_discogs(results)
+    return album
 
 
 def get_movie(id):
     movie = db.get_movie(id)
     if movie:
+        if movie.image_url and "sv_local" not in movie.image_url:
+            movie.image_url = save_image_locally(movie)
+            db.save_movie(movie)
         return movie
 
     url = f"{OMDB_API}/?apikey={MOVIE_KEY}&i={id}"
     response = requests.get(url, headers=HEADERS).content
     result = json.loads(response)
     movie = Movie.from_omdb(result)
+    if movie.image_url:
+        movie.image_url = save_image_locally(movie)
+
     db.save_movie(movie)
 
-    return Movie.from_omdb(result)
+    return movie
 
 
 def get_game(id):
     game = db.get_game(id)
     if game:
+        if game.image_url and "sv_local" not in game.image_url:
+            game.image_url = save_image_locally(game)
+            db.save_game(game)
         return game
 
     url = f"{RAWG_API}/games/{id}?key={GAMES_KEY}"
     response = requests.get(url, headers=HEADERS).content
     result = json.loads(response)
     game = Game.from_rawg(result)
+    if game.image_url:
+        game.image_url = save_image_locally(game)
+
     db.save_game(game)
 
     return game
@@ -276,12 +294,18 @@ def get_game(id):
 def get_book(id):
     book = db.get_book(id)
     if book:
+        if book.image_url and "sv_local" not in book.image_url:
+            book.image_url = save_image_locally(book)
+            db.save_book(book)
         return book
 
     url = f"{GBOOKS_API}/volumes/{id}"
     response = requests.get(url, headers=HEADERS).content
     result = json.loads(response)
     book = Book.from_google(result)
+    if book.image_url:
+        book.image_url = save_image_locally(book)
+
     db.save_book(book)
 
     return book
@@ -311,3 +335,13 @@ def get_item_by_type(id, type):
         return get_album(id)
 
     return None
+
+
+def save_image_locally(data):
+    image_url = data.image_url
+    response = requests.get(image_url)
+    image_name = f"./static/images/sv_local_{data.type}_{data.id}.jpg"
+    with open(image_name, "wb") as f:
+        f.write(response.content)
+
+    return image_name[1:]

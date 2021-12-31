@@ -1,3 +1,32 @@
+/* pushster-regular - latin */
+@font-face {
+    font-family: 'Pushster';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/static/fonts/pushster/pushster-v12-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('/static/fonts/pushster/pushster-v12-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('/static/fonts/pushster/pushster-v12-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('/static/fonts/pushster/pushster-v12-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('/static/fonts/pushster/pushster-v12-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('/static/fonts/pushster/pushster-v12-latin-regular.svg#Pushster') format('svg'); /* Legacy iOS */
+  }
+
+/* poppins-regular - latin */
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/static/fonts/poppins/poppins-v15-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('/static/fonts/poppins/poppins-v15-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('/static/fonts/poppins/poppins-v15-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('/static/fonts/poppins/poppins-v15-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('/static/fonts/poppins/poppins-v15-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('/static/fonts/poppins/poppins-v15-latin-regular.svg#Poppins') format('svg'); /* Legacy iOS */
+  }
+    
+
 :root {
     --color-white: #eee;
     --color-whiter: #fff;
@@ -14,7 +43,8 @@
     margin: 0;
     box-sizing: border-box;
     color: var(--color-black);
-    font: 16pt sans-serif;
+    font-size: 16pt;
+    font-family: "Poppins", sans-serif;
 }
 
 html, body {
@@ -39,7 +69,17 @@ nav {
 }
 
 h1 {
-    color: var(--color-black)
+    color: var(--color-black);
+    font-family: "Pushster", cursive;
+    font-size: 20pt;
+}
+
+.logo {
+    height: 3ch;
+    width: 3ch;
+    background-size: contain;
+    border-radius: 100%;
+    margin-right: 1ch;
 }
 
 footer {
@@ -192,6 +232,7 @@ hr {
 .row-values > span {
     font-size: 12pt;
     text-overflow: ellipsis;
+    width: 50ch;
 }
 
 .row-values > span::after {
@@ -291,4 +332,9 @@ footer {
 
 .nowrap {
     flex-flow: nowrap;
+}
+
+.title-link {
+    display: flex;
+    align-items: center;
 }
