@@ -29,9 +29,7 @@ db.init_db()
 
 @app.route("/")
 def hello_world():
-    print(datetime.datetime.utcnow())
-    vibes = db.get_all_vibes()
-    print(datetime.datetime.utcnow())
+    vibes = []
     most_recent_vibes = make_vibe_pairs(vibes)
 
     return render_template("hello.html", most_recent_vibes=most_recent_vibes)
