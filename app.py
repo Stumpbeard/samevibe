@@ -50,22 +50,10 @@ db.init_db()
 
 @app.route("/")
 def hello_world():
-    app.logger.error("Time starting request:")
-    app.logger.error(datetime.utcnow())
-    vibes = db.get_all_vibes(app)
-    app.logger.error("Time after request:")
-    app.logger.error(datetime.utcnow())
+    vibes = db.get_all_vibes()
     most_recent_vibes = make_vibe_pairs(vibes)
-    app.logger.error("Time after making vibe pairs:")
-    app.logger.error(datetime.utcnow())
 
-    app.logger.error("Rendering the template")
-    app.logger.error(datetime.utcnow())
-    template = render_template("hello.html", most_recent_vibes=most_recent_vibes)
-    app.logger.error("Returning the template to the requester")
-    app.logger.error(datetime.utcnow())
-
-    return template
+    return render_template("hello.html", most_recent_vibes=most_recent_vibes)
 
 
 @app.route("/loaderio-9f5e57e7decacfa267f90d5884bb7d0b/")
@@ -286,18 +274,13 @@ def get_album(id):
 
 
 def get_movie(id):
-    app.logger.error(f"Attempting to get movie with id {id} from db")
     movie = db.get_movie(id)
-    app.logger.error(f"Finished query for movie with id {id} from db")
     if movie:
-        app.logger.error(f"Movie for id {id} existed")
         if movie.image_url and "sv_local" not in movie.image_url:
-            app.logger.error(f"Movie for id {id} needs image_url updated")
             movie.image_url = save_image_locally(movie)
             db.save_movie(movie)
         return movie
 
-    app.logger.error(f"Movie for id {id} did not exist")
     url = f"{OMDB_API}/?apikey={MOVIE_KEY}&i={id}"
     response = requests.get(url, headers=HEADERS).content
     result = json.loads(response)

@@ -82,18 +82,12 @@ def search_unique_ids_for_vibe(vibe):
     return list(ids)
 
 
-def get_all_vibes(app, limit=10):
-    app.logger.error("Time before connecting")
-    app.logger.error(datetime.utcnow())
+def get_all_vibes(limit=10):
     connection = sqlite3.connect("samevibe.db")
     cursor = connection.cursor()
-    app.logger.error("Time after connecting, before querying")
-    app.logger.error(datetime.utcnow())
     results = cursor.execute(
         "SELECT * FROM relationships ORDER BY id desc LIMIT ?;", (limit,)
     ).fetchall()
-    app.logger.error("Time after querying")
-    app.logger.error(datetime.utcnow())
 
     return results
 
