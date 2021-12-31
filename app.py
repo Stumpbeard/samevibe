@@ -50,8 +50,10 @@ db.init_db()
 
 @app.route("/")
 def hello_world():
+    app.logger.error("Time starting request:")
     app.logger.error(datetime.utcnow())
-    vibes = db.get_all_vibes()
+    vibes = db.get_all_vibes(app)
+    app.logger.error("Time after request:")
     app.logger.error(datetime.utcnow())
     most_recent_vibes = make_vibe_pairs(vibes)
 
