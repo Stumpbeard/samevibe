@@ -56,6 +56,8 @@ def hello_world():
     app.logger.error("Time after request:")
     app.logger.error(datetime.utcnow())
     most_recent_vibes = make_vibe_pairs(vibes)
+    app.logger.error("Time after making vibe pairs:")
+    app.logger.error(datetime.utcnow())
 
     app.logger.error("Rendering the template")
     app.logger.error(datetime.utcnow())
