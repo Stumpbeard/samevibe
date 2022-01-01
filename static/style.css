@@ -1,6 +1,7 @@
 /* pushster-regular - latin */
 @font-face {
     font-family: 'Pushster';
+    font-display: swap;
     font-style: normal;
     font-weight: 400;
     src: url('/static/fonts/pushster/pushster-v12-latin-regular.eot'); /* IE9 Compat Modes */
@@ -15,6 +16,7 @@
 /* poppins-regular - latin */
 @font-face {
     font-family: 'Poppins';
+    font-display: swap;
     font-style: normal;
     font-weight: 400;
     src: url('/static/fonts/poppins/poppins-v15-latin-regular.eot'); /* IE9 Compat Modes */
