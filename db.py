@@ -1,8 +1,10 @@
+import base64
 from datetime import datetime
 import json
 import sqlite3
+from sqlite3.dbapi2 import Cursor
 
-from serializers import Album, Book, Game, Movie, Vibe
+from serializers import Album, Book, Game, Movie, Vibe, Email
 
 
 def init_db():
@@ -243,5 +245,36 @@ def get_movie(id):
 
     if len(result) > 0:
         return Movie.from_sqlite(result[0])
+    else:
+        return None
+
+
+def get_email(email):
+    cursor = get_cursor()
+    result = cursor.execute(
+        "SELECT * FROM emails WHERE email = ? LIMIT 1;", (email,)
+    ).fetchall()
+
+    if len(result) > 0:
+        return Email.from_sqlite(result[0])
+    else:
+        return None
+
+
+def create_email(email):
+    conn = sqlite3.connect("samevibe.db")
+    cursor = conn.cursor()
+    token = base64.b64encode(bytes(email + str(datetime.utcnow().timestamp())))
+    cursor.execute(
+        "INSERT INTO emails (email, token, verified) VALUES = (?, ?, ?);",
+        (email, token, False),
+    )
+    conn.commit()
+    result = cursor.execute(
+        "SELECT * FROM emails WHERE email = ? LIMIT 1;", (email,)
+    ).fetchall()
+
+    if len(result) > 0:
+        return Email.from_sqlite(result[0])
     else:
         return None

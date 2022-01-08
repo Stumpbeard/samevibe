@@ -38,4 +38,10 @@
     {% endfor %}
 </ul>
 {% endif %}
+
+{% if notification and notification == "subscribed" %}
+<div class="notification">
+    ⓘ Subscribed!
+</div>
+{% endif %}
 {% endblock %}

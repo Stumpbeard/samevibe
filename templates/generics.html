@@ -115,6 +115,13 @@
                 <li><a href="/album/{{ data.id }}/vibe/{{ vibe.name }}">{{ vibe.name }} ({{ vibe.count }})</a></li>
                 {% endfor %}
             </ol>
+            <details class="subscription-details">
+                <summary>Want updates?</summary>
+                <form action="/subscribe/{{ data.type }}/{{ data.id}}" method="post">
+                    <input name="email" type="email" placeholder="youremail@address.com">
+                    <button>Subscribe</button>
+                </form>
+            </details>
         </div>
     </div>
 </div>

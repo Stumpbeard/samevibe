@@ -3,7 +3,7 @@ import json
 from logging.config import dictConfig
 import os
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_mail import Mail, Message
 import requests
 
@@ -144,6 +144,8 @@ def details(main_type, id):
 
     vibes = db.find_vibes(id)
 
+    n = request.args.get("n")
+
     return render_template(
         "details.html",
         id=id,
@@ -153,7 +155,29 @@ def details(main_type, id):
         data=data,
         main_type=main_type,
         subsearch_text=q or "",
+        notification=n,
     )
+
+
+@app.route("/verify/<token>")
+def verify(token):
+    return "<p>Thanks, you're all verified.</p>"
+
+
+@app.route("/subscribe/<type>/<id>", methods=["POST"])
+def email_subscribe(type, id):
+    form_email = request.form.get("email")
+    email = db.get_email(form_email)
+    if not email:
+        email = db.create_email(form_email)
+        msg = Message(
+            "Verify your Same Vibe email",
+            recipients=[form_email],
+            html=f'<p>If you wanted to receive updates from Same Vibe, click here to verify this address:</p><p><a href="{url_for("verify", email.token)}">{url_for("verify", email.token)}</a></p>',
+            sender=("Same Vibe", "hello@samevi.be"),
+        )
+        mail.send(msg)
+    return redirect(f"/{type}/{id}?n=subscribed")
 
 
 @app.route("/<main_type>/<id>/connect/<type>/<related_id>")

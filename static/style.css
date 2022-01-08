@@ -143,6 +143,7 @@ nav > form > input {
 
 input {
     border-radius: 1ch;
+    padding: 0.25ch 0.75ch;
 }
 
 .search-image {
@@ -345,3 +346,22 @@ footer {
     display: flex;
     align-items: center;
 }
+
+.subscription-details * {
+    font-size: 12pt;
+}
+
+.notification {
+    position: absolute;
+    top: 1ch;
+    right: 5ch;
+    background: var(--color-2-light);
+    padding: 1ch;
+    padding-top: 0.75ch;
+    border-radius: 1ch;
+    opacity: 100;
+    animation: fade_out 2s linear 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fade_out { from { opacity: 100; } to { opacity: 0; }  }

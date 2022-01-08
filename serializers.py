@@ -271,3 +271,20 @@ class SearchResult:
 class Vibe:
     name: str
     count: int
+
+
+@dataclass
+class Email:
+    id: int
+    email: str
+    token: str
+    verified: bool
+
+    @classmethod
+    def from_sqlite(cls, result):
+        return cls(
+            id=result[0],
+            email=result[1],
+            token=result[2],
+            verified=result[3],
+        )
