@@ -9,6 +9,7 @@ requests = "*"
 black = "*"
 ipython = "*"
 gunicorn = "*"
+flask-mail = "*"
 
 [dev-packages]
 

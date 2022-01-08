@@ -4,6 +4,7 @@ from logging.config import dictConfig
 import os
 
 from flask import Flask, render_template, request, redirect
+from flask_mail import Mail, Message
 import requests
 
 import db
@@ -23,6 +24,11 @@ HEADERS = {
     "User-Agent": USER_AGENT,
 }
 
+MAIL_USE_SSL = os.environ.get("MAIL_USE_SSL") == "true"
+MAIL_SERVER = os.environ.get("MAIL_SERVER")
+MAIL_PORT = os.environ.get("MAIL_PORT")
+MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
 
 dictConfig(
     {
@@ -45,6 +51,12 @@ dictConfig(
 
 
 app = Flask(__name__)
+app.config["MAIL_USE_SSL"] = MAIL_USE_SSL
+app.config["MAIL_SERVER"] = MAIL_SERVER
+app.config["MAIL_PORT"] = MAIL_PORT
+app.config["MAIL_USERNAME"] = MAIL_USERNAME
+app.config["MAIL_PASSWORD"] = MAIL_PASSWORD
+mail = Mail(app)
 db.init_db()
 
 

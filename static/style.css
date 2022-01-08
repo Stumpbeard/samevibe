@@ -258,6 +258,11 @@ footer {
     text-decoration-line: underline;
 }
 
+.nav-link {
+    text-decoration-line: underline;
+    font-size: 14pt;
+}
+
 .vibe-list {
     display: flex;
     flex-flow: row wrap;
