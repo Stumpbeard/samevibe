@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS emails
     id INTEGER PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
     token TEXT NOT NULl,
-    verified INTEGER NOT NULL,
+    verified INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS subscriptions
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS subscriptions
     type TEXT NOT NULL,
     type_id TEXT NOT NULL,
     email_id INTEGER NOT NULL,
-    subscribed INTEGER,
+    subscribed INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS albums

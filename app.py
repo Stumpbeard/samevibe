@@ -161,6 +161,7 @@ def details(main_type, id):
 
 @app.route("/verify/<token>")
 def verify(token):
+    db.verify_email(token)
     return "<p>Thanks, you're all verified.</p>"
 
 
@@ -173,7 +174,7 @@ def email_subscribe(type, id):
         msg = Message(
             "Verify your Same Vibe email",
             recipients=[form_email],
-            html=f'<p>If you wanted to receive updates from Same Vibe, click here to verify this address:</p><p><a href="{url_for("verify", email.token)}">{url_for("verify", email.token)}</a></p>',
+            html=f'<p>If you wanted to receive updates from Same Vibe, click here to verify this address:</p><p><a href="{url_for("verify", token=email.token, _external=True)}">{url_for("verify", token=email.token, _external=True)}</a></p>',
             sender=("Same Vibe", "hello@samevi.be"),
         )
         mail.send(msg)

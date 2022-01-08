@@ -264,9 +264,11 @@ def get_email(email):
 def create_email(email):
     conn = sqlite3.connect("samevibe.db")
     cursor = conn.cursor()
-    token = base64.b64encode(bytes(email + str(datetime.utcnow().timestamp())))
+    token = base64.b64encode(
+        bytes(email + str(datetime.utcnow().timestamp()), "utf-8")
+    ).decode("utf-8")
     cursor.execute(
-        "INSERT INTO emails (email, token, verified) VALUES = (?, ?, ?);",
+        "INSERT INTO emails (email, token, verified) VALUES (?, ?, ?);",
         (email, token, False),
     )
     conn.commit()
@@ -278,3 +280,11 @@ def create_email(email):
         return Email.from_sqlite(result[0])
     else:
         return None
+
+
+def verify_email(token):
+    conn = sqlite3.connect("samevibe.db")
+    cur = conn.cursor()
+
+    cur.execute("UPDATE emails SET verified = ? WHERE token = ?", (True, token))
+    conn.commit()
