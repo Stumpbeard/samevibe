@@ -1,0 +1,35 @@
+{% import "generics.html" as generics %}
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Subscriptions</h2>
+<p>Email updates are sent weekly. Click the <button class="small-text">&nbsp;x&nbsp;</button> next to any item to stop
+    receiving updates.
+</p>
+
+{% if not token %}
+reverify form goes here
+{% endif %}
+
+<ul class="search-results">
+    {% for result in subscriptions %}
+    <li class="space-between">
+        <a href="/{{ result.type }}/{{ result.id }}" class="search-row">
+            <div class="search-image" style="background-image:  url('{{ result.image_url }}');"></div>
+            <div class="search-text">
+                <span class="bold">{{ result.title }} <span class="light">({{ result.year }})</span></span>
+                <span>{{ result.creator }}</span>
+                <span class="subtext">{{ result.genre }}</span>
+            </div>
+        </a>
+        <form action="/unsubscribe" method="post">
+            <input type="text" name="token" hidden value="{{ token }}">
+            <input type="text" name="type" hidden value="{{ result.type }}">
+            <input type="text" name="id" hidden value="{{ result.id }}">
+            <button>&nbsp;x&nbsp;</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -4,6 +4,7 @@ from logging.config import dictConfig
 import os
 
 from flask import Flask, render_template, request, redirect, url_for
+from flask.helpers import make_response
 from flask_mail import Mail, Message
 import requests
 
@@ -162,7 +163,10 @@ def details(main_type, id):
 @app.route("/verify/<token>")
 def verify(token):
     db.verify_email(token)
-    return "<p>Thanks, you're all verified.</p>"
+
+    resp = make_response(render_template("verify.html"))
+    resp.set_cookie("token", token, httponly=True)
+    return resp
 
 
 @app.route("/subscribe/<type>/<id>", methods=["POST"])
@@ -178,7 +182,10 @@ def email_subscribe(type, id):
             sender=("Same Vibe", "hello@samevi.be"),
         )
         mail.send(msg)
-    return redirect(f"/{type}/{id}?n=subscribed")
+    db.create_subscription(type, id, email.id)
+
+    resp = redirect(f"/{type}/{id}?n=subscribed")
+    return resp
 
 
 @app.route("/<main_type>/<id>/connect/<type>/<related_id>")
@@ -256,6 +263,42 @@ def list_vibe_connections(main_type, id, vibe):
         data=data,
         vibes=vibes,
     )
+
+
+@app.route("/subscriptions")
+def subscriptions():
+    token = request.cookies.get("token")
+    subscriptions = db.get_subscriptions(token)
+
+    connections = []
+    for connection in subscriptions:
+        connection_id = connection[2]
+        type = connection[1]
+        if type == "movie":
+            connection = get_movie(connection_id)
+        elif type == "game":
+            connection = get_game(connection_id)
+        elif type == "book":
+            connection = get_book(connection_id)
+        else:
+            connection = get_album(connection_id)
+
+        connection = SearchResult.from_serial(connection, type)
+
+        connections.append(connection)
+
+    return render_template("subscriptions.html", subscriptions=connections, token=token)
+
+
+@app.route("/unsubscribe", methods=["POST"])
+def unsubscribe():
+    token = request.form.get("token")
+    type = request.form.get("type")
+    type_id = request.form.get("id")
+
+    db.unsubscribe(token, type, type_id)
+
+    return redirect("/subscriptions")
 
 
 def search_music(q, page=1):

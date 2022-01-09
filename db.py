@@ -2,7 +2,7 @@ import base64
 from datetime import datetime
 import json
 import sqlite3
-from sqlite3.dbapi2 import Cursor
+import time
 
 from serializers import Album, Book, Game, Movie, Vibe, Email
 
@@ -26,8 +26,8 @@ def create_vibe_connection(id, id_type, related_id, related_type, vibe):
     )
     cursor = connection.cursor()
     cursor.execute(
-        "INSERT INTO relationships (primary_obj, primary_type, secondary_obj, secondary_type, vibe) VALUES (?, ?, ?, ?, ?);",
-        (id, id_type, related_id, related_type, vibe),
+        "INSERT INTO relationships (primary_obj, primary_type, secondary_obj, secondary_type, vibe, created_at) VALUES (?, ?, ?, ?, ?, ?);",
+        (id, id_type, related_id, related_type, vibe, int(time.time())),
     )
     connection.commit()
 
@@ -287,4 +287,45 @@ def verify_email(token):
     cur = conn.cursor()
 
     cur.execute("UPDATE emails SET verified = ? WHERE token = ?", (True, token))
+    conn.commit()
+
+
+def create_subscription(type, id, email_id):
+    conn = sqlite3.connect("samevibe.db")
+    cur = conn.cursor()
+
+    cur.execute(
+        "INSERT INTO subscriptions (type, type_id, email_id, subscribed, last_sent) VALUES (?, ?, ?, ?, ?);",
+        (type, id, email_id, True, int(time.time())),
+    )
+    conn.commit()
+
+
+def get_subscriptions(token):
+    cur = get_cursor()
+    results = cur.execute(
+        "SELECT id FROM emails WHERE token = ? LIMIT 1;", (token,)
+    ).fetchall()
+    if not results:
+        return []
+    email_id = results[0][0]
+
+    results = cur.execute(
+        "SELECT * FROM subscriptions WHERE email_id = ? AND subscribed = true;",
+        (email_id,),
+    ).fetchall()
+
+    return results
+
+
+def unsubscribe(token, type, type_id):
+    cur = get_cursor()
+    conn = cur.connection
+    email_id = cur.execute(
+        "SELECT id FROM emails WHERE token = ? LIMIT 1;", (token,)
+    ).fetchall()[0][0]
+    cur.execute(
+        "UPDATE subscriptions SET subscribed = false WHERE email_id = ? AND type = ? AND type_id = ?;",
+        (email_id, type, type_id),
+    )
     conn.commit()

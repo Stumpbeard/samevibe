@@ -163,7 +163,8 @@ input {
 .search-row {
     display: flex;
     align-items: center;
-    margin-bottom: 1ch;
+    padding-bottom: 0.5ch;
+    padding-top: 0.5ch;
 }
 
 .search-results > li:nth-child(even) {
@@ -288,7 +289,6 @@ footer {
 
 .tracklist > * {
     font-size: 12pt;
-    
 }
 
 .find-similar {
@@ -365,3 +365,9 @@ footer {
 }
 
 @keyframes fade_out { from { opacity: 100; } to { opacity: 0; }  }
+
+.space-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

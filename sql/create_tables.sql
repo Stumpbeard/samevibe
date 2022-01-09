@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS relationships
     primary_type TEXT NOT NULL,
     secondary_obj TEXT NOT NULL,
     secondary_type TEXT NOT NULL,
-    vibe TEXT NOT NULL
+    vibe TEXT NOT NULL,
+    created_at INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS emails
@@ -22,7 +23,8 @@ CREATE TABLE IF NOT EXISTS subscriptions
     type TEXT NOT NULL,
     type_id TEXT NOT NULL,
     email_id INTEGER NOT NULL,
-    subscribed INTEGER
+    subscribed INTEGER,
+    last_sent INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS albums
